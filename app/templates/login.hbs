@@ -1,0 +1,29 @@
+{{#if session.isAuthenticated}}
+  Is authenticated
+{{/if}}
+{{#bs-form model=changeset onSubmit=(action "authenticate" changeset) as |form|}}
+	{{! todo form.group validation=changeset... }}
+  {{form.element
+    controlType="text"
+    property="identification"
+    placeholder="X-konto"
+    autofocus=true
+    required=true
+  }}
+  {{form.element
+    controlType="password"
+    property="password"
+    placeholder="Lösenord"
+    required=true
+  }}
+  {{! type=submit ?? }}
+  {{#bs-button
+    type="primary"
+    buttonType="submit"
+    disabled=form.isSubmitting
+  }}
+    Logga in
+    {{#if form.isSubmitting}} {{fa-icon 'spinner'}} {{/if}}
+  {{/bs-button}}
+{{/bs-form}}
+{{outlet}}

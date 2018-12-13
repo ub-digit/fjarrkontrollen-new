@@ -24,6 +24,17 @@ module.exports = function(environment) {
     }
   };
 
+  ENV.APP.serviceURL = 'https://fjarrkontrollen-server-staging.ub.gu.se';
+  ENV.APP.authenticationBaseURL = 'https://fjarrkontrollen-server-staging.ub.gu.se/session';
+
+  ENV['simple-auth'] = {
+    authorizer: 'authorizer:gub',
+    // Authenticator???
+    //crossOriginWhitelist: ['http://localhost:4000/'],
+    //routeAfterAuthentication: 'admin',
+    //routeIfAlreadyAuthenticated: 'admin'
+  };
+
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
