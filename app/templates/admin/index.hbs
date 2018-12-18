@@ -1,1 +1,66 @@
+<div class="row">
+  <div class="col-12">
+    {{#bs-form model=this formLayout="horizontal" onSubmit=(action "filterOrders") as |form|}}
+      {{#form.element
+        controlType="power-select"
+        options=locations
+        value=location
+        onChange=(action "changeLocation")
+      as |el|
+      }}
+        {{#el.control
+          searchField="nameSv"
+          searchEnabled=true
+          searchPlaceholder="Type your name"
+        as |location|
+        }}
+          {{location.nameSv}}
+        {{/el.control}}
+      {{/form.element}}
+
+      {{#form.element
+        controlType="power-select"
+        options=statusGroups
+        value=statusGroup
+        onChange=(action "changeStatusGroup")
+      as |el|
+      }}
+        {{#el.control
+          searchField="nameSv"
+          searchEnabled=true
+          searchPlaceholder="Type your name"
+        as |statusGroup|
+        }}
+          {{statusGroup.nameSv}}
+        {{/el.control}}
+      {{/form.element}}
+
+      {{#form.element
+        controlType="power-select"
+        options=orderTypes
+        value=orderType
+        onChange=(action "changeOrderType")
+      as |el|
+      }}
+        {{#el.control
+          searchField="nameSv"
+          searchEnabled=true
+          searchPlaceholder="Type your name"
+        as |orderType|
+        }}
+          {{orderType.nameSv}}
+        {{/el.control}}
+      {{/form.element}}
+    {{/bs-form}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <ul>
+      {{#each filteredOrders as |order|}}
+        <li>{{order.title}}</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
 {{outlet}}

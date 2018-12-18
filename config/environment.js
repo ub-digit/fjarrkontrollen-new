@@ -24,8 +24,8 @@ module.exports = function(environment) {
     }
   };
 
-  ENV.APP.serviceURL = 'https://fjarrkontrollen-server-staging.ub.gu.se';
-  ENV.APP.authenticationBaseURL = 'https://fjarrkontrollen-server-staging.ub.gu.se/session';
+  ENV.APP.serviceURL = 'http://localhost:3000';
+  ENV.APP.authenticationBaseURL = 'http://localhost:3000/session';
 
   ENV['simple-auth'] = {
     authorizer: 'authorizer:gub',

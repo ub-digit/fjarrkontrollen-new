@@ -3,8 +3,10 @@ import ENV from '../config/environment';
 import { inject } from '@ember/service';
 import { isPresent } from '@ember/utils';
 import { computed } from '@ember/object';
+import ActiveModelAdapter from 'active-model-adapter';
+import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 
-export default DS.ActiveModelAdapter.extend({
+export default ActiveModelAdapter.extend(DataAdapterMixin, {
   session: inject(),
   host: ENV.APP.serviceURL,
 

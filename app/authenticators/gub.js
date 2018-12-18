@@ -1,5 +1,5 @@
 import Base from 'ember-simple-auth/authenticators/base';
-import RSVP from 'rsvp';
+import { Promise, resolve } from 'rsvp';
 import ENV from '../config/environment';
 import { inject } from '@ember/service';
 
@@ -13,7 +13,7 @@ export default Base.extend({
   ajax: inject(),
 
   restore(data) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.get('ajax').request(
         `${ENV.APP.authenticationBaseURL}/${data.token}`
       ).then(() => {
@@ -25,7 +25,7 @@ export default Base.extend({
   },
 
   authenticate(credentials) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       this.get('ajax').post(ENV.APP.authenticationBaseURL, {
         data: {
           xkonto: credentials.identification,

@@ -1,2 +1,21 @@
-<h1>Logged in</h1>
-{{outlet}}
+{{#bs-navbar as |navbar|}}
+  <a class="navbar-brand" href={{href-to "admin"}}>Fjärrkontrollen</a>
+  {{navbar.toggle}}
+  {{#navbar.content}}
+    {{#navbar.nav class="flex-grow-1" as |nav|}}
+      {{#nav.item}}
+        {{#nav.link-to "admin"}}Fjarr in{{/nav.link-to}}
+      {{/nav.item}}
+      {{#nav.item}}
+        <a role="button" {{action "scan"}}>Scanna streckkod</a>
+      {{/nav.item}}
+    {{/navbar.nav}}
+    <div class="user">
+      <span class="p-2 user-name">{{session.data.authenticated.name}}</span>
+      {{#bs-button onClick=(action "logout")}}Logga ut{{/bs-button}}
+    </div>
+  {{/navbar.content}}
+{{/bs-navbar}}
+<div class="container-fluid">
+  {{outlet}}
+</div>
