@@ -1,60 +1,94 @@
 import Ember from 'ember';
 import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
+import { A } from '@ember/array';
+import { inject } from '@ember/service';
+import { debounce } from '@ember/runloop';
 
 export default Ember.Controller.extend({
+  session: inject('session'),
+
   queryParams: {
     locationId: 'location',
     statusGroupLabel: 'statusGroup',
+    searchTermsDebounced: 'search',
     orderTypeId: 'orderType',
-    deliverySourceId: 'deliverySource'
+    deliverySourceLabel: 'deliverySource',
+    isArchivedOptionValue: 'isArchived',
+    toBeInvoiced: 'toBeInvoiced',
+    userId: 'user'
   },
 
+  filtersExpanded: null,
+
+  /* Filters */
   locationId: null,
   //statusId: null, ???
   statusGroupLabel: null,
   orderTypeId: null,
-  deliverySourceId: null,
+  deliverySourceLabel: null,
+  isArchivedOptionValue: null,
+  toBeInvoiced: null,
+  userId: null,
+  searchTermsDebounced: null,
+  searchTerms: null,
+  /* End filters */
 
-  location: computed('locationId', function() {
-    return this.get('locationId')
-      ? this.get('locations').findBy('id', this.get('locationId'))
-      : null;
-  }),
-  statusGroup: computed('statusGroupLabel', function() {
-    return this.get('statusGroupLabel')
-      ? this.get('statusGroups').findBy('label', this.get('statusGroupLabel'))
-      : null;
-  }),
-  orderType: computed('orderTypeId', function() {
-    return this.get('orderTypeId')
-      ? this.get('orderTypes').findBy('id', this.get('orderTypeId'))
-      : null;
-  }),
-  deliverySource: computed('deliverySourceId', function() {
-    return this.get('deliverySourceId')
-      ? this.get('deliverySources').findBy('id', this.get('deliverySourceId'))
-      : null;
+  init() {
+    this._super(...arguments);
+    this.set('isArchivedOptions', A([{
+      label: 'Visa bada aktiva och arkiverade',
+      value: '',
+    }, {
+      label: 'Visa endast aktiva',
+      value: 'true'
+    }, {
+      label: 'Visa endast arkiverade',
+      value: 'false'
+    }
+    ]));
+    this.set('searchTermsDebounced', this.get('searchTerms'));
+  },
+
+  myOrdersFilterActive: computed('userId', function() {
+    return !!this.get('userId');
   }),
 
   ordersFilter: computed(
     'locationId',
     'statusGroupLabel',
+    'searchTermsDebounced',
     'orderTypeId',
-    'deliverySourceId', function() {
+    'deliverySourceLabel',
+    'isArchivedOptionValue',
+    'toBeInvoiced',
+    'userId',
+    function() {
       let filter = {};
 
-      if(this.get('locationId')) {
+      if(!isEmpty(this.get('locationId'))) {
         filter['currentLocation'] = this.get('locationId');
       }
-      if(this.get('statusGroupLabel')) {
-        filter['status_group'] = this.get('statusGroup.label');
+      if(!isEmpty(this.get('statusGroupLabel'))) {
+        filter['status_group'] = this.get('statusGroupLabel');
       }
-      if(this.get('orderTypeId')) {
+      if(!isEmpty(this.get('searchTermsDebounced'))) {
+        filter['search_term'] = this.get('searchTermsDebounced');
+      }
+      if(!isEmpty(this.get('orderTypeId'))) {
         filter['mediaType'] = this.get('orderTypeId');
       }
-      if(this.get('locationId')) {
-        //filter['currentLocation'] = this.get('locationId');
+      if(!isEmpty(this.get('deliverySourceLabel'))) {
+        filter['delivery_source'] = this.get('deliverySourceLabel');
+      }
+      if(!isEmpty(this.get('isArchivedOptionValue'))) {
+        filter['is_archived'] = this.get('isArchivedOptionValue');
+      }
+      if(!isEmpty(this.get('toBeInvoiced'))) {
+        filter['to_be_invoiced'] = this.get('toBeInvoiced');
+      }
+      if(!isEmpty(this.get('userId'))) {
+        filter['user'] = this.get('userId');
       }
       return Object.keys(filter).length !== 0 ? filter : null;
     }
@@ -66,25 +100,41 @@ export default Ember.Controller.extend({
       : this.store.query('order', this.get('ordersFilter'));
   }),
 
+  setSearchTermsDebounced() {
+    this.set('searchTermsDebounced', this.get('searchTerms'));
+  },
+
   actions: {
-    filterOrders() {
-      console.log('Filter orders');
+    resetFilters() {
+      [
+        'locationId',
+        'statusGroupLabel',
+        'orderTypeId',
+        'deliverySourceLabel',
+        'isArchivedOptionValue',
+        'toBeInvoiced',
+        'userId',
+        'searchTermsDebounced',
+        'searchTerms'
+      ].forEach((filterKey) => {
+        this.set(filterKey, null);
+      });
     },
-    resetOrderFilters() {
-      console.log('reset order filters');
+
+    setToBeInvoiced(value) {
+      this.set('toBeInvoiced', value ? true : null);
     },
-    changeLocation(location) {
-      this.set('locationId', location.get('id'));
+
+    setMyOrders(value) {
+      this.set('userId', value
+        ? this.get('session.data.authenticated.userid')
+        : null
+      );
     },
-    changeStatusGroup(statusGroup) {
-      this.set('statusGroupLabel', statusGroup.get('label'));
-    },
-    changeOrderType(orderType) {
-      this.set('orderTypeId', orderType.get('id'));
-    },
-    changeDeliverySource(deliverySource) {
-      this.set('deliverySourceId', deliverySource.get('id'));
-    },
-    /* expandOrderFilters() ? */
+
+    setSearchTerms(value) {
+      this.set('searchTerms', value);
+      debounce(this, 'setSearchTermsDebounced', 500);
+    }
   }
 });
