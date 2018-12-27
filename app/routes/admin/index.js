@@ -10,8 +10,7 @@ export default Ember.Route.extend({
       users: this.store.findAll('user'), // Why do we need this????
       orderTypes: this.store.findAll('order-type'),
       emailTemplates: this.store.findAll('email-template'),
-      deliverySources: this.store.findAll('delivery-source'),
-      orders: this.store.findAll('order')
+      deliverySources: this.store.findAll('delivery-source')
     });
   },
 

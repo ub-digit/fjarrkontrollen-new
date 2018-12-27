@@ -4,19 +4,25 @@ import { isEmpty } from '@ember/utils';
 import { A } from '@ember/array';
 import { inject } from '@ember/service';
 import { debounce } from '@ember/runloop';
+import ObjectProxy from '@ember/object/proxy';
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+import { observer } from '@ember/object';
+
+const ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 export default Ember.Controller.extend({
   session: inject('session'),
 
   queryParams: {
     locationId: 'location',
-    statusGroupLabel: 'statusGroup',
+    statusGroupLabel: 'status_group',
     searchTermsDebounced: 'search',
-    orderTypeId: 'orderType',
-    deliverySourceLabel: 'deliverySource',
-    isArchivedOptionValue: 'isArchived',
-    toBeInvoiced: 'toBeInvoiced',
-    userId: 'user'
+    orderTypeId: 'order_type',
+    deliverySourceLabel: 'delivery_source',
+    isArchivedOptionValue: 'is_archived',
+    toBeInvoiced: 'to_be_invoiced',
+    userId: 'user',
+    currentPage: 'page'
   },
 
   filtersExpanded: null,
@@ -33,6 +39,10 @@ export default Ember.Controller.extend({
   searchTermsDebounced: null,
   searchTerms: null,
   /* End filters */
+
+  /* Pagination */
+  currentPage: null,
+  /* End pagination */
 
   init() {
     this._super(...arguments);
@@ -62,8 +72,7 @@ export default Ember.Controller.extend({
     'deliverySourceLabel',
     'isArchivedOptionValue',
     'toBeInvoiced',
-    'userId',
-    function() {
+    'userId', function() {
       let filter = {};
 
       if(!isEmpty(this.get('locationId'))) {
@@ -90,14 +99,24 @@ export default Ember.Controller.extend({
       if(!isEmpty(this.get('userId'))) {
         filter['user'] = this.get('userId');
       }
-      return Object.keys(filter).length !== 0 ? filter : null;
+      return filter;
     }
   ),
 
-  filteredOrders: computed('ordersFilter', function() {
-    return isEmpty(this.get('ordersFilter'))
-      ? this.get('orders')
-      : this.store.query('order', this.get('ordersFilter'));
+  ordersFilterChanged: observer('ordersFilter', function() {
+    // Reset pagination
+    this.set('currentPage', null);
+  }),
+
+  filteredOrders: computed('ordersFilter', 'currentPage', function() {
+    let filters = this.get('ordersFilter');
+    if(this.get('currentPage')) {
+      filters['page'] = this.get('currentPage');
+    }
+    let proxy = ObjectPromiseProxy.create({
+      promise: this.store.query('order', filters)
+    });
+    return proxy;
   }),
 
   setSearchTermsDebounced() {

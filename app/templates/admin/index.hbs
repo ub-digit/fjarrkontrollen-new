@@ -128,12 +128,36 @@
     {{/bs-form}}
   </div>
 </div>
+{{#if filteredOrders.isFulfilled}}
+  <div class="row">
+    <div class="col-12">
+      Fjärrkontrollen hittade <strong>{{filteredOrders.content.meta.query.total}}</strong> ordrar
+    </div>
+  </div>
+
+  {{#if (gt filteredOrders.content.meta.pagination.pages 1)}}
+    {{bs4-paginator
+      navAreaLabelText="Orders pagination"
+      previousText="Foregaende"
+      nextText="Nasta"
+      currentPage=filteredOrders.content.meta.pagination.page
+      totalPages=filteredOrders.content.meta.pagination.pages
+      currentPageItemsCount=3
+      firstPageItemsCount=2
+      lastPageItemsCount=2
+      pageChanged=(action (mut currentPage))
+    }}
+    {{! TODO rename => onPageChange}}
+  {{/if}}
+{{/if}}
 <div class="row">
   <div class="col-12">
     <ul>
-      {{#each filteredOrders as |order|}}
-        <li>{{order.title}}</li>
-      {{/each}}
+      {{#if filteredOrders.isFulfilled}}
+        {{#each filteredOrders.content as |order|}}
+          <li>{{order.title}}</li>
+        {{/each}}
+      {{/if}}
     </ul>
   </div>
 </div>

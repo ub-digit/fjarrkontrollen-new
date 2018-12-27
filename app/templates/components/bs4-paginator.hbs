@@ -1,0 +1,73 @@
+{{#abstract-paginator
+    navAriaLabelText=navAriaLabelText
+    previousText=previousText
+    nextText=nextText
+    currentPage=currentPage
+    totalPages=totalPages
+    currentPageItemsCount=currentPageItemsCount
+    firstPageItemsCount=firstPageItemsCount
+    lastPageItemsCount=lastPageItemsCount
+    pageChanged=pageChanged
+  as |paginator|
+}}
+  <nav aria-label="{{navAriaLabelText}}">
+    <ul class="pagination">
+      {{#if paginator.isFirstPage}}
+        <li class="page-item disabled">
+          <a class="page-link" role="button" tabindex="-1">
+            {{previousText}}
+          </a>
+        </li>
+      {{else}}
+        <li class="page-item">
+          <a
+            class="page-link"
+            role="button"
+            tabindex="-1"
+            {{action paginator.previousPageAction}}
+          >
+            {{previousText}}
+          </a>
+        </li>
+      {{/if}}
+      {{#each paginator.pageItems as |item|}}
+        <li class="page-item{{if item.isActive " active"}}">
+          {{#if item.page}}
+            <a
+              class="page-link"
+              role="button"
+              {{action paginator.changePageAction item.page}}
+            >
+              {{item.page}}
+            </a>
+          {{else}}
+            <a
+              class="page-link"
+              role="button"
+            >
+              ...
+            </a>
+          {{/if}}
+        </li>
+      {{/each}}
+      {{#if paginator.isLastPage}}
+        <li class="page-item disabled">
+          <a class="page-link" role="button" tabindex="-1">
+            {{nextText}}
+          </a>
+        </li>
+      {{else}}
+        <li class="page-item">
+          <a
+            class="page-link"
+            role="button"
+            tabindex="-1"
+            {{action paginator.nextPageAction}}
+          >
+            {{nextText}}
+          </a>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
+{{/abstract-paginator}}
