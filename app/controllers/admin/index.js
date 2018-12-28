@@ -22,7 +22,9 @@ export default Ember.Controller.extend({
     isArchivedOptionValue: 'is_archived',
     toBeInvoiced: 'to_be_invoiced',
     userId: 'user',
-    currentPage: 'page'
+    currentPage: 'page',
+    sortField: 'sort_field',
+    sortDirection: 'sort_direction'
   },
 
   filtersExpanded: null,
@@ -42,7 +44,10 @@ export default Ember.Controller.extend({
 
   /* Pagination */
   currentPage: null,
-  /* End pagination */
+
+  /* Sorting*/
+  sortField: null,
+  sortDirection: null,
 
   init() {
     this._super(...arguments);

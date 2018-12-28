@@ -152,6 +152,33 @@
 {{/if}}
 <div class="row">
   <div class="col-12">
+    <table class="table tabl-estriped table-condensed">
+      <thead>
+        <tr>
+          <th>
+            {{#order-sort-field
+              sortField="order_number"
+              currentSortField=sortField
+              currentSortDirection=sortDirection
+              onChangeSortField=(action (mut sortField))
+              onChangeSortDirection=(action (mut sortDirection))
+            }}
+              Ordernummer
+            {{/order-sort-field}}
+          </th>
+          <th>
+            {{#order-sort-field
+              sortField="name"
+              currentSortField=sortField
+              currentSortDirection=sortDirection
+              onChangeSortField=(action (mut sortField))
+              onChangeSortDirection=(action (mut sortDirection))
+            }}
+              Lantagare
+            {{/order-sort-field}}
+          </th>
+        </tr>
+      </thead>
     <ul>
       {{#if filteredOrders.isFulfilled}}
         {{#each filteredOrders.content as |order|}}
@@ -159,6 +186,7 @@
         {{/each}}
       {{/if}}
     </ul>
+    </table>
   </div>
 </div>
 {{outlet}}
