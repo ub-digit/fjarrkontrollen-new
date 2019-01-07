@@ -27,6 +27,14 @@ export default Ember.Controller.extend({
     sortDirection: 'sort_direction'
   },
 
+  sortFields: {
+    order_number: 'Ordernummber',
+    name: 'Lantagare',
+    order_type_id: 'Typ',
+    title: 'Titel',
+    status_id: 'Status',
+  },
+
   filtersExpanded: null,
 
   /* Filters */
@@ -77,7 +85,10 @@ export default Ember.Controller.extend({
     'deliverySourceLabel',
     'isArchivedOptionValue',
     'toBeInvoiced',
-    'userId', function() {
+    'userId',
+    'sortField',
+    'sortDirection',
+    function() {
       let filter = {};
 
       if(!isEmpty(this.get('locationId'))) {
@@ -104,6 +115,12 @@ export default Ember.Controller.extend({
       if(!isEmpty(this.get('userId'))) {
         filter['user'] = this.get('userId');
       }
+      if(!isEmpty(this.get('sortField'))) {
+        filter['sortfield'] = this.get('sortField');
+      }
+      if(!isEmpty(this.get('sortDirection'))) {
+        filter['sortdir'] = this.get('sortDirection');
+      }
       return filter;
     }
   ),
@@ -113,15 +130,17 @@ export default Ember.Controller.extend({
     this.set('currentPage', null);
   }),
 
-  filteredOrders: computed('ordersFilter', 'currentPage', function() {
-    let filters = this.get('ordersFilter');
-    if(this.get('currentPage')) {
-      filters['page'] = this.get('currentPage');
-    }
-    let proxy = ObjectPromiseProxy.create({
-      promise: this.store.query('order', filters)
-    });
-    return proxy;
+  filteredOrders: computed(
+    'ordersFilter',
+    'currentPage', function() {
+      let filter = this.get('ordersFilter');
+      if(!isEmpty(this.get('currentPage'))) {
+        filter['page'] = this.get('currentPage');
+      }
+      let proxy = ObjectPromiseProxy.create({
+        promise: this.store.query('order', filter)
+      });
+      return proxy;
   }),
 
   setSearchTermsDebounced() {

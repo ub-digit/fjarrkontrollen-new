@@ -1,0 +1,10 @@
+{{#each-in sortFields as |fieldName fieldText|}}
+  {{yield (component 'sort-field'
+    sortField=fieldName
+    sortFieldText=fieldText
+    currentSortField=currentSortField
+    currentSortDirection=currentSortDirection
+    onChangeSortField=(action "onChangeSortField")
+    onChangeSortDirection=(action "onChangeSortDirection"))
+  }}
+{{/each-in}}
