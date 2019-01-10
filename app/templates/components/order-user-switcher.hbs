@@ -1,0 +1,37 @@
+{{#bs-dropdown as |dd|}}
+  {{#dd.button}}
+    {{#if assignedUsername}}
+      {{assignedUsername}}
+    {{else}}
+      Ingen
+    {{/if}}
+    <span class="caret"></span>
+  {{/dd.button}}
+  {{#dd.menu as |ddm|}}
+    {{#unless assignedUserIsLoggedInUser}}
+      {{#ddm.item}}
+        <a
+          class="dropdown-item"
+          href="javascript:void(0)"
+          {{action (perform setOrderAssignedUser orderId loggedInUserId)}}
+        >
+          {{loggedInUsername}}
+        </a>
+      {{/ddm.item}}
+    {{/unless}}
+    {{#if assignedUserId}}
+      {{#ddm.item}}
+        <a
+          class="dropdown-item"
+          href="javascript:void(0)"
+          {{action (perform setOrderAssignedUser orderId null)}}
+        >
+          Slapp order
+        </a>
+      {{/ddm.item}}
+    {{/if}}
+  {{/dd.menu}}
+{{/bs-dropdown}}
+<div class="ml-2 spinner{{if setOrderAssignedUser.isRunning " loading"}}">
+  <i class="fas fa-spinner fa-spin"></i>
+</div>

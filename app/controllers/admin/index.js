@@ -7,6 +7,7 @@ import { debounce } from '@ember/runloop';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { observer } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 const ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
@@ -28,7 +29,7 @@ export default Ember.Controller.extend({
   },
 
   sortFields: {
-    order_number: 'Ordernummber',
+    order_number: 'Ordernummer',
     name: 'Lantagare',
     order_type_id: 'Typ',
     title: 'Titel',
@@ -56,6 +57,25 @@ export default Ember.Controller.extend({
   /* Sorting*/
   sortField: null,
   sortDirection: null,
+
+  /*
+  setOrderAssignedUserPromise(orderId, newUserId) {
+    return new RSVP.Promise((resolve, reject) => {
+      this.store.find('order', orderId).then(function(order) {
+        order.set('userId', newUserId);
+        //TODO: If error in then below, will propagate to parent catch???
+        order.save().then(() => {
+          resolve();
+          //TODO: refresh model needed??
+        }).catch((error) => {
+          //TODO: error handling, ember concurrency way?
+          console.log(error);
+          reject(error);
+        });
+      });
+    });
+  },
+  */
 
   init() {
     this._super(...arguments);

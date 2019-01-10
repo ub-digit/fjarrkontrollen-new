@@ -134,49 +134,120 @@
       Fjärrkontrollen hittade <strong>{{filteredOrders.content.meta.query.total}}</strong> ordrar
     </div>
   </div>
-
   {{#if (gt filteredOrders.content.meta.pagination.pages 1)}}
-    {{bs4-paginator
-      navAreaLabelText="Orders pagination"
-      previousText="Foregaende"
-      nextText="Nasta"
-      currentPage=filteredOrders.content.meta.pagination.page
-      totalPages=filteredOrders.content.meta.pagination.pages
-      currentPageItemsCount=3
-      firstPageItemsCount=2
-      lastPageItemsCount=2
-      pageChanged=(action (mut currentPage))
-    }}
-    {{! TODO rename => onPageChange}}
+    <div class="row">
+      <div class="col-12">
+        {{bs4-paginator
+          navAreaLabelText="Orders pagination"
+          previousText="Foregaende"
+          nextText="Nasta"
+          currentPage=filteredOrders.content.meta.pagination.page
+          totalPages=filteredOrders.content.meta.pagination.pages
+          currentPageItemsCount=3
+          firstPageItemsCount=2
+          lastPageItemsCount=2
+          pageChanged=(action (mut currentPage))
+        }}
+        {{! TODO rename => onPageChange}}
+      </div>
+    </div>
   {{/if}}
 {{/if}}
 <div class="row">
   <div class="col-12">
-    <table class="table tabl-estriped table-condensed">
-      <thead>
-        <tr>
+    {{#if filteredOrders.isFulfilled}}
+      <table class="table tabl-estriped table-condensed">
+        <thead>
           {{#sort-fields
+            tagName="tr"
             sortFields=sortFields
             currentSortField=sortField
             currentSortDirection=sortDirection
             onChangeSortField=(action (mut sortField))
             onChangeSortDirection=(action (mut sortDirection))
-          as |sortField|
+          as |sortFieldComponent sortField|
           }}
             <th>
-              {{sortField}}
+              {{sortFieldComponent}}
             </th>
+            {{#if (eq sortField 'order_number')}}
+              <th></th>
+              <th></th>
+            {{else if (eq sortField 'status_id')}}
+              <th></th>
+            {{/if}}
           {{/sort-fields}}
-         </tr>
-      </thead>
-    <ul>
-      {{#if filteredOrders.isFulfilled}}
-        {{#each filteredOrders.content as |order|}}
-          <li>{{order.title}}</li>
-        {{/each}}
-      {{/if}}
-    </ul>
-    </table>
+        </thead>
+        <tbody>
+          {{#each filteredOrders.content as |order|}}
+            <tr>
+              <td>{{order.orderNumber}}</td>
+              <td>
+                {{#if order.orderPath}}
+                  {{#if (eq order.orderPath 'LibrisEnduser')}}
+                    <span class="badge badge-info">{{order.orderPath}}</span>
+                  {{else}}
+                    <span class="badge badge-secondary">{{order.orderPath}}</span>
+                  {{/if}}
+                {{/if}}
+                {{#if order.stickyNoteId}}
+                  {{!TODO: class sticky-note not used}}
+                  <div class="sticky-note">
+                    <span class="badge badge-primary">
+                      <i class="far fa-file-alt"></i>
+                      {{#bs-tooltip placement="right"}}
+                        {{#if order.stickyNoteSubject}}
+                          <h4>{{order.stickyNoteSubject}}</h4>
+                        {{/if}}
+                          {{#if order.stickyNoteMessage}}
+                          <p>
+                            {{order.stickyNoteMessage}}
+                          </p>
+                        {{/if}}
+                      {{/bs-tooltip}}
+                    </span>
+                  </div>
+                {{/if}}
+              </td>
+              <td></td>
+              <td>{{trim order.name}}</td>
+              {{!TODO: class order-type not currently used}}
+              <td class="order-type">{{get (find-by "id" order.orderTypeId orderTypes) "nameSv"}}</td>
+              <td>{{trim order.title}}</td>
+              <td>{{get (find-by "id" order.statusId statusGroups) "nameSv"}}</td>
+              <td>
+                {{order-user-switcher
+                  setOrderAssignedUserPromise=setOrderAssignedUserPromise
+                  orderId=order.id
+                  assignedUsername=(get (find-by "id" order.userId users) "xkonto")
+                  assignedUserId=order.userId
+                  loggedInUsername=session.data.authenticated.username
+                  loggedInUserId=session.data.authenticated.userid
+                }}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{/if}}
   </div>
 </div>
+{{#if (gt filteredOrders.content.meta.pagination.pages 1)}}
+  <div class="row">
+    <div class="col-12">
+      {{bs4-paginator
+        navAreaLabelText="Orders pagination"
+        previousText="Foregaende"
+        nextText="Nasta"
+        currentPage=filteredOrders.content.meta.pagination.page
+        totalPages=filteredOrders.content.meta.pagination.pages
+        currentPageItemsCount=3
+        firstPageItemsCount=2
+        lastPageItemsCount=2
+        pageChanged=(action (mut currentPage))
+      }}
+      {{! TODO rename => onPageChange}}
+    </div>
+  </div>
+{{/if}}
 {{outlet}}
