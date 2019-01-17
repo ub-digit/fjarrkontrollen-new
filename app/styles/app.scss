@@ -14,3 +14,29 @@
     }
   }
 }
+
+.order-header {
+  display: flex;
+  align-items: center;
+
+  .order-header-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  .order-header-tools {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
+
+.messages-header {
+  display: flex;
+  align-items: center;
+  .messages-header-title {
+    margin-bottom: 0;
+  }
+}

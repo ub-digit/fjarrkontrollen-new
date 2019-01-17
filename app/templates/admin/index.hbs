@@ -154,9 +154,9 @@
   {{/if}}
 {{/if}}
 <div class="row">
-  <div class="col-12">
+  <div class="col-12 table-responsive-sm">
     {{#if filteredOrders.isFulfilled}}
-      <table class="table tabl-estriped table-condensed">
+      <table class="table table-striped table-sm">
         <thead>
           {{#sort-fields
             tagName="tr"
@@ -181,7 +181,7 @@
         <tbody>
           {{#each filteredOrders.content as |order|}}
             <tr>
-              <td>{{order.orderNumber}}</td>
+              <td><a href="{{href-to "admin.post" order.id}}">{{order.orderNumber}}</a></td>
               <td>
                 {{#if order.orderPath}}
                   {{#if (eq order.orderPath 'LibrisEnduser')}}
