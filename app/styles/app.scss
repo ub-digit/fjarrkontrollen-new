@@ -1,7 +1,53 @@
-@import "ember-bootstrap/bootstrap";
+// @import "ember-bootstrap/bootstrap";
+
+// Required
+@import "ember-bootstrap/functions";
+@import "bootstrap-variables";
+@import "ember-bootstrap/variables";
+@import "ember-bootstrap/mixins";
+
+// Optional - Bootstrapping/Resetting
+@import "ember-bootstrap/root";
+@import "ember-bootstrap/reboot";
+
+@import "ember-bootstrap/type";
+//@import "ember-bootstrap/images";
+//@import "ember-bootstrap/code";
+@import "ember-bootstrap/grid";
+@import "ember-bootstrap/tables";
+@import "ember-bootstrap/forms";
+@import "ember-bootstrap/buttons";
+@import "ember-bootstrap/transitions";
+@import "ember-bootstrap/dropdown";
+@import "ember-bootstrap/button-group";
+@import "ember-bootstrap/input-group";
+@import "ember-bootstrap/custom-forms"; //??
+@import "ember-bootstrap/nav";
+@import "ember-bootstrap/navbar";
+@import "ember-bootstrap/card";
+@import "ember-bootstrap/breadcrumb";
+@import "ember-bootstrap/pagination";
+@import "ember-bootstrap/badge";
+//@import "ember-bootstrap/jumbotron";
+@import "ember-bootstrap/alert";
+//@import "ember-bootstrap/progress";
+//@import "ember-bootstrap/media";
+//@import "ember-bootstrap/list-group";
+@import "ember-bootstrap/close";
+@import "ember-bootstrap/modal";
+@import "ember-bootstrap/tooltip";
+//@import "ember-bootstrap/popover";
+//@import "ember-bootstrap/carousel";
+@import "ember-bootstrap/utilities";
+@import "ember-bootstrap/print";
+
+
 @import "ember-power-select/themes/bootstrap";
 @import "ember-power-select";
 
+html {
+  font-size: 14px;
+}
 
 .order-user-switcher {
   display: flex;
@@ -15,9 +61,27 @@
   }
 }
 
+.order {
+  button.btn {
+    margin-left: map-get($spacers, 2);
+  }
+
+  table {
+    .form-group {
+      margin-bottom: 0;
+    }
+    th {
+      vertical-align: middle;
+      padding-left: 0.75rem; //Use bootstrap variable
+    }
+  }
+}
+
 .order-header {
   display: flex;
   align-items: center;
+  min-height: 60px;
+  margin-top: 10px; /*TODO boostrap spacer variables */
 
   .order-header-title {
     display: flex;
@@ -33,10 +97,75 @@
   }
 }
 
+.messages {
+  button.btn {
+    margin-right: map-get($spacers, 2);
+  }
+
+  form {
+    .btn-link {
+      padding: 0;
+      margin: 0;
+      margin-bottom: map-get($spacers, 2);
+      /* color: $blue; */
+      color: $gray-700;
+      &:hover {
+        color: $gray-900;
+      }
+    }
+
+    background-color: $table-accent-bg;
+    padding: $table-cell-padding;
+  }
+}
+
 .messages-header {
   display: flex;
+  min-height: 60px;
+  margin-top: 10px;
   align-items: center;
   .messages-header-title {
     margin-bottom: 0;
+  }
+}
+
+.messages-tools {
+  margin-bottom: map-get($spacers, 4);
+}
+
+.messages-card {
+  margin-bottom: $table-cell-padding;
+  .card-title {
+    margin-bottom: map-get($spacers, 4);
+    .messages-card-title-icon {
+      margin-right: map-get($spacers, 2);
+    }
+  }
+
+  .card-body {
+    button.btn-link {
+      margin: 0;
+      padding: 0 5px;
+      color: $gray-700;
+      border: solid 1px $gray-300;
+      .messages-card-sticky-icon.active {
+        color: $green;
+      }
+    }
+    button.btn-link:hover {
+      background-color: $gray-200;
+      border-color: $gray-400;
+    }
+  }
+
+  .messages-card-subject {
+    margin-bottom: map-get($spacers, 2) * -1;
+  }
+
+  p.card-text {
+    white-space: pre-line;
+    font-size: $font-size-sm;
+    /* WTF, where does margin comes from, safe to do this for all browsers? */
+    /* margin-bottom: map-get($spacers, 3) * -1; */
   }
 }

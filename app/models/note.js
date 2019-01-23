@@ -8,6 +8,6 @@ export default DS.Model.extend({
   subject: DS.attr('string'),
   message: DS.attr('string'),
   isEmail: DS.attr('boolean'),
-  createdAt: DS.attr('string'),
-  updatedAt: DS.attr('string')
+  createdAt: DS.attr('date'),
+  updatedAt: DS.attr('date')
 });

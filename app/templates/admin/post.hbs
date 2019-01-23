@@ -1,16 +1,16 @@
-{{#with (changeset order OrderValidations) as |changeset|}}
-  {{#bs-form
-    formLayout="vertical"
-    model=changeset
-    onSubmit=(action "saveOrder")
-    onInvalid=(action "orderInvalid")
-    showAllValidations=showAllValidations
-  as |form|}}
     <div class="row">
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-md-8 order">
+      {{#with (changeset order OrderValidations) as |changeset|}}
+        {{#bs-form
+          formLayout="vertical"
+          model=changeset
+          onSubmit=(action "saveOrder")
+          onInvalid=(action "orderInvalid")
+          showAllValidations=showAllValidations
+        as |form|}}
         <div class="row">
           <div class="col-12 order-header">
-            <h2 class="order-header-title mt-2 mb-2">
+            <h2 class="order-header-title">
               {{order.orderNumber}}
               <span class="badge badge-secondary ml-2">{{order.orderPath}}</span>
             </h2>
@@ -19,7 +19,7 @@
                 {{#bs-button
                   onClick=(action "cancelEditOrder" changeset)
                 }}
-                  Close
+                  Stang <i class="fas fa-times"></i>
                 {{/bs-button}}
 
                 {{#bs-button
@@ -27,7 +27,7 @@
                   buttonType="submit"
                   disabled=form.isSubmitting
                 }}
-                  Save
+                  Spara <i class="fas fa-check"></i>
                   {{! TODO: replace other html spinners with this?}}
                   {{#if form.isSubmitting}} {{fa-icon 'spinner'}} {{/if}}
                 {{/bs-button}}
@@ -36,7 +36,7 @@
                   type="primary"
                   onClick=(action "editOrder" changeset)
                 }}
-                  Edit <i class="fas fa-pencil-alt fa-xs ml-1"></i>
+                  Redigera <i class="fas fa-pencil-alt fa-xs ml-1"></i>
                 {{/bs-button}}
               {{/if}}
             </div>
@@ -112,7 +112,7 @@
             }}
           </div>
           <div class="col-12 col-sm-6 col-md-3">
-            <h4>Utlandnade bibliotek</h4>
+            <h4>Utlanande bibliotek</h4>
             {{#if isEditing}}
               {{form.element
                 property="lendingLibrary"
@@ -180,7 +180,7 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <h4>Orderkort</h4>
-            <table class="table table-striped table-sm">
+            <table class="table table-striped{{if isEditing " table-sm"}}">
               <tbody>
                 <tr titel="Titel">
                   <th>Titel</th>
@@ -457,7 +457,7 @@
           </div>
           <div class="col-12 col-md-6">
             <h4>Lantagare</h4>
-            <table class="table table-striped table-sm">
+            <table class="table table-striped {{if isEditing " table-sm"}}">
               <tbody>
                 <tr titel="Namn">
                   <th>Namn</th>
@@ -602,7 +602,7 @@
               </tbody>
             </table>
             <h4>Leveransuppgifter</h4>
-            <table class="table table-striped table-sm">
+            <table class="table table-striped {{if isEditing " table-sm"}}">
               <tbody>
                 <tr titel="Gatuadress/Box">
                   <th>Gatuadress/Box</th>
@@ -676,7 +676,7 @@
             </table>
 
             <h4>Faktureringsuppgifter</h4>
-            <table class="table table-striped table-sm">
+            <table class="table table-striped{{if isEditing " table-sm"}}">
               <tbody>
                 <tr titel="Namn">
                   <th>Namn</th>
@@ -765,15 +765,204 @@
             </table>
           </div>
         </div>
+        {{/bs-form}}
+        {{/with}}
       </div>
-      <div class="col-12 col-md-4 messages-header">
-        <div class="mt-2 mb-2">
-          <h4 class="messages-header-title">Messages & notes</h4>
+      <div class="col-12 col-md-4">
+        <div class="row messages">
+          <div class="col-12">
+            <div class="messages-header">
+              <h4 class="messages-header-title">Meddelanden &amp; anteckningar</h4>
+            </div>
+          </div>
+            <div class="col-12 messages-tools">
+            {{#unless (or isCreatingMessage isCreatingNote)}}
+              {{#bs-button
+                type="secondary"
+                onClick=(action "showCreateMessage")
+              }}
+                Nytt meddelande <i class="far fa-envelope"></i>
+              {{/bs-button}}
+              {{#bs-button
+                type="secondary"
+                onClick=(action "showCreateNote")
+              }}
+                Ny anteckning <i class="far fa-file-alt"></i>
+              {{/bs-button}}
+            {{/unless}}
+            {{#if isCreatingMessage}}
+              {{#with (changeset message MessageValidations) as |changeset|}}
+                {{#bs-form
+                  formLayout="vertical"
+                  model=changeset
+                  onSubmit=(action "saveMessage")
+                  onInvalid=(action "messageInvalid")
+                  showAllValidations=showAllValidations
+                as |form|}}
+                  <div class="d-flex flex-row-reverse">
+                    {{#bs-button
+                      type="link"
+                      onClick=(action (mut isCreatingMessage) false)
+                    }}
+                      <i class="fas fa-times"></i>
+                    {{/bs-button}}
+                  </div>
+                  {{#if messageErrors}}
+                    {{#each messageErrors as |error|}}
+                      {{#bs-alert dismissible=false type="danger"}}
+                        {{error}}
+                      {{/bs-alert}}
+                    {{/each}}
+                  {{/if}}
+                  {{#form.element
+                    controlType="power-select"
+                    options=messageLanguageOptions
+                    value=(find-by "language" messageLanguage messageLanguageOptions)
+                    onChange=(action (action "onTemplatePropertyChange" changeset "messageLanguage") value="language")
+                  as |el|
+                  }}
+                    {{#el.control
+                      searchEnabled=false
+                    as |option|
+                    }}
+                      {{option.label}}
+                    {{/el.control}}
+                  {{/form.element}}
+
+                  {{#form.element
+                    controlType="power-select"
+                    placeholder="Välj standardsvar"
+                    options=emailTemplates
+                    value=(find-by "id" emailTemplateId emailTemplates)
+                    onChange=(action (action "onTemplatePropertyChange" changeset "emailTemplateId") value="id")
+                  as |el|
+                  }}
+                    {{#el.control
+                      searchEnabled=false
+                    as |emailTemplate|
+                    }}
+                      {{get emailTemplate (get
+                          (find-by
+                            "language"
+                            messageLanguage
+                            messageLanguageOptions
+                          ) "subjectProperty"
+                        )
+                      }}
+                    {{/el.control}}
+                  {{/form.element}}
+
+                  {{form.element
+                    property="subject"
+                    placeholder="Ämne"
+                    controlType="text"
+                  }}
+
+                  {{form.element
+                    property="message"
+                    placeholder="Meddelande"
+                    rows=10
+                    controlType="textarea"
+                  }}
+                  {{!
+                    FIXME: why no padding, wtf
+                    "Fix" by adding form-group class
+                  }}
+                  {{form.element
+                    label="Bifoga bibliografiska uppgifter i svaret"
+                    controlType="checkbox"
+                    class="form-group"
+                    value=addBiblioInfo
+                    onChange=(action "onAddBiblioInfoChange" changeset)
+                  }}
+
+                  {{#bs-button
+                    type="submit"
+                    buttonType="submit"
+                    disabled=form.isSubmitting
+                  }}
+                    Skicka
+                    {{#if form.isSubmitting}} {{fa-icon 'spinner'}} {{/if}}
+                  {{/bs-button}}
+                {{/bs-form}}
+              {{/with}}
+            {{else if isCreatingNote}}
+              {{#with (changeset note NoteValidations) as |changeset|}}
+                {{#bs-form
+                  formLayout="vertical"
+                  model=changeset
+                  onSubmit=(action "saveNote")
+                  onInvalid=(action "noteInvalid")
+                  showAllValidations=showAllValidations
+                as |form|}}
+                  <div class="d-flex flex-row-reverse">
+                    {{#bs-button
+                      type="link"
+                      onClick=(action (mut isCreatingNote) false)
+                    }}
+                      <i class="fas fa-times"></i>
+                    {{/bs-button}}
+                  </div>
+                  {{#if noteErrors}}
+                    {{#each noteErrors as |error|}}
+                      {{#bs-alert dismissible=false type="danger"}}
+                        {{error}}
+                      {{/bs-alert}}
+                    {{/each}}
+                  {{/if}}
+                  {{form.element
+                    property="message"
+                    placeholder="Meddelande"
+                    rows=10
+                    controlType="textarea"
+                  }}
+                  {{#bs-button
+                    type="submit"
+                    buttonType="submit"
+                    disabled=form.isSubmitting
+                  }}
+                    Skicka
+                    {{#if form.isSubmitting}} {{fa-icon 'spinner'}} {{/if}}
+                  {{/bs-button}}
+                {{/bs-form}}
+              {{/with}}
+            {{/if}}
+            </div>
+            <div class="col-12">
+            {{#each notes as |note|}}
+              {{!TODO: sorted}}
+              <div class="card messages-card">
+                <div class="card-body">
+                  <div class="d-flex align-items-start">
+                    <h6 class="flex-grow-1 card-title">
+                      <i class="far fa-envelope messages-card-title-icon"></i>
+                      {{moment-format note.createdAt "DD-MM-YYYY HH:MM"}}
+                      av {{get (find-by "id" note.userId users) "xkonto"}}
+                    </h6>
+                    {{#bs-button
+                      title="Sätter denna notering som sticky. Detta gör att den blir tillgänglig i översiktslistan."
+                      type="link"
+                      class="font-size-sm"
+                      onClick=(action "toggleStickyNote" note.id)
+                    }}
+                      <small>
+                        <i class="fas fa-thumbtack messages-card-sticky-icon {{ if (eq note.id order.stickyNoteId) " active"}}"></i>
+                      </small>
+                    {{/bs-button}}
+                  </div>
+                  {{#if note.subject}}
+                    <div class="messages-card-subject">
+                      <strong>Ämne:</strong> {{note.subject}}
+                    </div>
+                  {{/if}}
+                  <p class="card-text">
+                    {{note.message}}
+                  </p>
+                </div>
+              </div>
+            {{/each}}
+          </div>
         </div>
       </div>
     </div>
-  {{/bs-form}}
-{{/with}}
-
-
 {{outlet}}
