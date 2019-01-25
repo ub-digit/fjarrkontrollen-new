@@ -8,11 +8,32 @@ import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { observer } from '@ember/object';
 import { task } from 'ember-concurrency';
+import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
 
 const ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   session: inject('session'),
+
+  powerSelectOverlayedOptions: [{
+    source: 'locations',
+    target: 'locationOptions',
+    valueProperty: 'id',
+    labelProperty: 'nameSv',
+    noneLabel: 'Alla bibliotek'
+  }, {
+    source: 'orderTypes',
+    target: 'orderTypeOptions',
+    valueProperty: 'id',
+    labelProperty: 'nameSv',
+    noneLabel: 'Alla beställningstyper'
+  }, {
+    source: 'deliverySources',
+    target: 'deliverySourceOptions',
+    valueProperty: 'label',
+    labelProperty: 'name',
+    noneLabel: 'Alla leveransställen'
+  }],
 
   queryParams: {
     locationId: 'location',

@@ -58,7 +58,7 @@
         </div>
         <div class="row">
           <div class="col-12 col-md-6">
-            <h4>Handlaggande enhet</h4>
+            <h5>Handlaggande enhet</h5>
 
             {{#if isEditing}}
               {{#form.element
@@ -81,28 +81,29 @@
               {{get (find-by "id" changeset.locationId locations) "nameSv"}}
             {{/if}}
             {{!TODO: Implement isActive}}
-            <h4>Status</h4>
+            <h5>Status</h5>
             {{#if isEditing}}
               {{#form.element
                 controlType="power-select"
-                options=statuses
-                value=(find-by "id" changeset.statusid statuses)
-                onChange=(action (mut changeset.statusid) value="id")
+                options=statusOptions
+                placeholder="Välj status"
+                value=(find-by "value" changeset.statusid statusOptions)
+                onChange=(action (mut changeset.statusid) value="value")
               as |el|
               }}
                 {{#el.control
-                  searchField="nameSv"
+                  searchField="label"
                   searchEnabled=true
                   searchPlaceholder="Type your name"
                 as |status|
                 }}
-                  {{status.nameSv}}
+                  {{status.label}}
                 {{/el.control}}
               {{/form.element}}
             {{else}}
               {{get (find-by "id" changeset.statusid statuses) "nameSv"}}
             {{/if}}
-            <h4>Arkivera</h4>
+            <h5>Arkivera</h5>
             {{form.element
               label="Akiverad"
               controlType="checkbox"
@@ -112,7 +113,7 @@
             }}
           </div>
           <div class="col-12 col-sm-6 col-md-3">
-            <h4>Utlanande bibliotek</h4>
+            <h5>Utlanande bibliotek</h5>
             {{#if isEditing}}
               {{form.element
                 property="lendingLibrary"
@@ -123,22 +124,24 @@
             {{else}}
               {{changeset.lendingLibrary}}
             {{/if}}
-            <h4>Levererad fran</h4>
+            <h5>Levererad fran</h5>
+            {{!onChange=(action (mut changeset.deliverySourceId) value="value")}}
+            {{!onChange=(action (action "tmp" changeset) value="value")}}
             {{#if isEditing}}
               {{#form.element
                 controlType="power-select"
-                options=deliverySources
-                value=(find-by "id" changeset.deliverySourceId deliverySources)
-                onChange=(action (mut changeset.deliverySourceId) value="id")
+                options=deliverySourceOptions
+                value=(find-by "value" changeset.deliverySourceId deliverySourceOptions)
+                onChange=(action (mut changeset.deliverySourceId) value="value")
               as |el|
               }}
                 {{#el.control
-                  searchField="name"
+                  searchField="label"
                   searchEnabled=true
                   searchPlaceholder="Type your name"
-                as |status|
+                as |option|
                 }}
-                  {{status.name}}
+                  {{option.label}}
                 {{/el.control}}
               {{/form.element}}
             {{else}}
@@ -149,7 +152,7 @@
             {{/if}}
           </div>
           <div class="col-12 col-sm-6 col-md-3">
-            <h4>Aterlamningsdatum</h4>
+            <h5>Aterlamningsdatum</h5>
             {{#if isEditing}}
               {{form.element
                 controlType="text"
@@ -158,7 +161,7 @@
             {{else}}
               {{changeset.loanPeriod}}
             {{/if}}
-            <h4>Pris (SEK)</h4>
+            <h5>Pris (SEK)</h5>
             {{#if isEditing}}
               {{form.element
                 controlType="number"
@@ -167,7 +170,7 @@
             {{else}}
               {{changeset.price}}
             {{/if}}
-            <h4>Ska faktureras</h4>
+            <h5>Ska faktureras</h5>
             {{form.element
               label="Ska faktureras"
               controlType="checkbox"

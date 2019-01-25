@@ -1,131 +1,156 @@
 <div class="row">
-  <div class="col-12">
-    {{#bs-form model=this formLayout="horizontal" as |form|}}
-      {{#form.element
-        label="Bibliotek"
-        controlType="power-select"
-        options=locations
-        value=(find-by "id" locationId locations)
-        onChange=(action (mut locationId) value="id")
-      as |el|
-      }}
-        {{#el.control
-          searchField="nameSv"
-          searchEnabled=true
-          searchPlaceholder="Type your name"
-        as |location|
-        }}
-          {{location.nameSv}}
-        {{/el.control}}
-      {{/form.element}}
-
-      {{#form.element
-        label="Statusgrupp"
-        controlType="power-select"
-        options=statusGroups
-        value=(find-by "label" statusGroupLabel statusGroups)
-        onChange=(action (mut statusGroupLabel) value="label")
-      as |el|
-      }}
-        {{#el.control
-          searchField="nameSv"
-          searchEnabled=true
-          searchPlaceholder="Type your name"
-        as |statusGroup|
-        }}
-          {{statusGroup.nameSv}}
-        {{/el.control}}
-      {{/form.element}}
-
-      {{form.element
-        label="Sok i fritext"
-        controlType="text"
-        value=searchTerms
-        onChange=(action "setSearchTerms")
-      }}
-
-      {{#form.element
-        label="Bestallningstyp"
-        controlType="power-select"
-        options=orderTypes
-        value=(find-by "id" orderTypeId orderTypes)
-        onChange=(action (mut orderTypeId) value="id")
-      as |el|
-      }}
-        {{#el.control
-          searchField="nameSv"
-          searchEnabled=true
-          searchPlaceholder="Type your name"
-        as |orderType|
-        }}
-          {{orderType.nameSv}}
-        {{/el.control}}
-      {{/form.element}}
-
-      {{form.element
-        label="Mina ordrar"
-        controlType="checkbox"
-        value=myOrdersFilterActive
-        onChange=(action "setMyOrders")
-      }}
-
-      {{#bs-button onClick=(action "resetFilters")}}
-        Aterstall filter
-      {{/bs-button}}
-
-      {{#bs-button active=filtersExpanded onClick=(toggle "filtersExpanded" this)}}
-        {{#if filtersExpanded}}
-          Färre filter
-        {{else}}
-          Fler filter
-        {{/if}}
-      {{/bs-button}}
-      {{#bs-collapse collapsed=(not filtersExpanded)}}
-
-        {{#form.element
-          label="Leveransstalle"
-          controlType="power-select"
-          options=deliverySources
-          value=(find-by "label" deliverySourceLabel deliverySources)
-          onChange=(action (mut deliverySourceLabel) value="label")
-
+  <div class="col-12 pt-4">
+    {{#bs-form
+      model=this
+      formLayout="vertical"
+      class="orders-filters-form"
+    as |form|}}
+      <div class="row">
+        <div class="col-6 col-sm-3 col-lg-2">
+          {{#form.element
+            label="Bibliotek"
+            controlType="power-select"
+            options=locationOptions
+            value=(find-by "value" locationId locationOptions)
+            onChange=(action (mut locationId) value="value")
           as |el|
           }}
-          {{#el.control
-            searchField="name"
-            searchEnabled=true
-            searchPlaceholder="Type your name"
-          as |deliverySource|
+            {{#el.control
+              searchField="label"
+              searchEnabled=true
+              searchPlaceholder="Type your name"
+            as |option|
+            }}
+              {{option.label}}
+            {{/el.control}}
+          {{/form.element}}
+        </div>
+        <div class="col-6 col-sm-3 col-lg-2">
+          {{#form.element
+            label="Statusgrupp"
+            controlType="power-select"
+            options=statusGroups
+            value=(find-by "label" statusGroupLabel statusGroups)
+            onChange=(action (mut statusGroupLabel) value="label")
+          as |el|
           }}
-            {{deliverySource.name}}
-          {{/el.control}}
-        {{/form.element}}
-
-        {{#form.element
-          label="Arkiverade & Aktiva"
-          controlType="power-select"
-          options=isArchivedOptions
-          value=(find-by "value" isArchivedOptionValue isArchivedOptions)
-          onChange=(action (mut isArchivedOptionValue) value="value")
-        as |el|
-        }}
-          {{#el.control
-            searchEnabled=false
-          as |option|
+            {{#el.control
+              searchField="nameSv"
+              searchEnabled=true
+              searchPlaceholder="Type your name"
+            as |statusGroup|
+            }}
+              {{statusGroup.nameSv}}
+            {{/el.control}}
+          {{/form.element}}
+        </div>
+        <div class="col-6 col-sm-3 col-lg-2">
+          {{form.element
+            label="Sök i fritext"
+            controlType="text"
+            value=searchTerms
+            onChange=(action "setSearchTerms")
           }}
-            {{option.label}}
-          {{/el.control}}
-        {{/form.element}}
-
-        {{form.element
-          label="Skall faktureras"
-          controlType="checkbox"
-          value=toBeInvoiced
-          onChange=(action "setToBeInvoiced")
-        }}
-
-      {{/bs-collapse}}
+        </div>
+        <div class="col-6 col-sm-3">
+          {{#form.element
+            label="Beställningstyp"
+            controlType="power-select"
+            options=orderTypeOptions
+            value=(find-by "value" orderTypeId orderTypeOptions)
+            onChange=(action (mut orderTypeId) value="value")
+          as |el|
+          }}
+            {{#el.control
+              searchField="label"
+              searchEnabled=true
+              searchPlaceholder="Type your name"
+            as |option|
+            }}
+              {{option.label}}
+            {{/el.control}}
+          {{/form.element}}
+        </div>
+        <div class="col-12 col-lg-3  d-flex align-items-end mb-lg-2">
+          {{form.element
+            label="Mina ordrar"
+            class="form-group"
+            controlType="checkbox"
+            value=myOrdersFilterActive
+            onChange=(action "setMyOrders")
+          }}
+        </div>
+        {{#liquid-if filtersExpanded class="col-12"}}
+          <div class="row">
+            <div class="col-6 col-lg-2">
+              {{#form.element
+                label="Leveransställe"
+                controlType="power-select"
+                options=deliverySourceOptions
+                value=(find-by "value" deliverySourceLabel deliverySourceOptions)
+                onChange=(action (mut deliverySourceLabel) value="value")
+              as |el|
+                }}
+                {{#el.control
+                  searchField="label"
+                  searchEnabled=true
+                  searchPlaceholder="Type your name"
+                as |option|
+                }}
+                  {{option.label}}
+                {{/el.control}}
+              {{/form.element}}
+            </div>
+            <div class="col-6 col-lg-2">
+              {{#form.element
+                label="Arkiverade & Aktiva"
+                controlType="power-select"
+                options=isArchivedOptions
+                value=(find-by "value" isArchivedOptionValue isArchivedOptions)
+                onChange=(action (mut isArchivedOptionValue) value="value")
+              as |el|
+              }}
+                {{#el.control
+                  searchEnabled=false
+                as |option|
+                }}
+                  {{option.label}}
+                {{/el.control}}
+              {{/form.element}}
+            </div>
+            <div class="col-12 col-lg-8 d-flex align-items-end  mb-lg-2">
+              {{form.element
+                label="Skall faktureras"
+                class="form-group"
+                controlType="checkbox"
+                value=toBeInvoiced
+                onChange=(action "setToBeInvoiced")
+              }}
+            </div>
+          </div>
+        {{/liquid-if}}
+        <div class="col-12 mb-4">
+          {{#bs-button onClick=(action "resetFilters")}}
+            Återstall filter
+          {{/bs-button}}
+        </div>
+      </div>
     {{/bs-form}}
+  </div>
+  <div class="col-12 d-flex justify-content-center border-top">
+    {{#bs-button
+      class="px-3"
+      title=(if filtersExpanded "Dölj fler filter" "Visa fler filter")
+      type="link"
+      active=filtersExpanded
+      onClick=(toggle "filtersExpanded" this)
+    }}
+      {{#if filtersExpanded}}
+      <i class="fas fa-angle-up"></i>
+      {{else}}
+      <i class="fas fa-angle-down"></i>
+      {{/if}}
+    {{/bs-button}}
   </div>
 </div>
 {{#if filteredOrders.isFulfilled}}

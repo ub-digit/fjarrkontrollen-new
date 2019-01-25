@@ -2,16 +2,32 @@ import Ember from 'ember';
 import OrderValidations from '../../validations/order';
 import MessageValidations from '../../validations/message';
 import NoteValidations from '../../validations/note';
+import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
 import { A } from '@ember/array';
-import { observer } from '@ember/object';
-import EmberObject, { computed } from '@ember/object';
+//import { observer } from '@ember/object';
+import EmberObject, { computed, defineProperty } from '@ember/object';
 import { isBlank } from '@ember/utils';
 //import { debounce } from '@ember/runloop';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   OrderValidations,
   MessageValidations,
   NoteValidations,
+
+  powerSelectOverlayedOptions: [{
+    source: 'deliverySources',
+    target: 'deliverySourceOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    disabledProperty: 'isDisabled',
+    noneLabel: 'Ej vald'
+  }, {
+    source: 'statuses',
+    target: 'statusOptions',
+    valueProperty: 'id',
+    labelProperty: 'nameSv',
+    disabledProperty: 'isDisabled'
+  }],
 
   isEditing: false,
   isCreatingMessage: false,
@@ -83,23 +99,6 @@ export default Ember.Controller.extend({
       subjectProperty: 'subjectEn',
       bodyProperty: 'bodyEn'
     }]));
-    /*
-    this.set('messageLanguageOptions', A([EmberObject.create({
-      label: 'Svenska',
-      language: 'sv',
-      subject: 'subjectSv',
-      body: 'bodySv'
-    }), EmberObject.create({
-      label: 'Engelska',
-      language: 'en',
-      subject: 'subjectEn',
-      body: 'bodyEn'
-    })]));
-    */
-    /*
-    this.store.createRecord('email-template', {
-    });
-    */
   },
 
   biblioInfo: computed(
@@ -148,7 +147,6 @@ export default Ember.Controller.extend({
       let separator = '------------------------- \n';
       return "\n\n" + separator + message +  separator;
 	}),
-
 
   actions: {
     /** Order **/
@@ -221,7 +219,6 @@ export default Ember.Controller.extend({
       }));
     },
     onTemplatePropertyChange(changeset, property, value) {
-      let emailTemplateBody = null;
       if (this.get('emailTemplate')) {
         if (
             !isBlank(changeset.get('subject')) &&
