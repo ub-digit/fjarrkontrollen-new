@@ -1,13 +1,13 @@
-{{#bs-navbar as |navbar|}}
+{{#bs-navbar class="mb-4" toggleBreakpoint="sm" as |navbar|}}
   <a class="navbar-brand" href={{href-to "admin"}}>Fjärrkontrollen</a>
   {{navbar.toggle}}
   {{#navbar.content}}
-    {{#navbar.nav class="flex-grow-1" as |nav|}}
+    {{!perhaps should be just button, nav is semantically confusing}}
+    {{#navbar.nav class="flex-grow-1" as |nav| }}
       {{#nav.item}}
-        {{#nav.link-to "admin"}}Fjarr in{{/nav.link-to}}
-      {{/nav.item}}
-      {{#nav.item}}
-        <a role="button" {{action "scan"}}>Scanna streckkod</a>
+        {{#bs-button type="link" onClick=(action "scan")}}
+          <i class="fas fa-barcode"></i> Scanna streckkod
+        {{/bs-button}}
       {{/nav.item}}
     {{/navbar.nav}}
     <div class="user">
@@ -17,5 +17,7 @@
   {{/navbar.content}}
 {{/bs-navbar}}
 <div class="container-fluid">
+  {{#if isShowingScanModal}}
+  {{/if}}
   {{outlet}}
 </div>

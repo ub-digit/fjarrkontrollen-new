@@ -49,6 +49,12 @@ html {
   font-size: 14px;
 }
 
+.orders-filters-form {
+  label {
+    font-weight: bold;
+  }
+}
+
 .order-user-switcher {
   display: flex;
   justify-content: start;
@@ -100,6 +106,7 @@ html {
 .messages {
   button.btn {
     margin-right: map-get($spacers, 2);
+    margin-bottom: map-get($spacers, 2);
   }
 
   form {
@@ -116,6 +123,7 @@ html {
 
     background-color: $table-accent-bg;
     padding: $table-cell-padding;
+    margin-bottom: map-get($spacers, 2);
   }
 }
 
@@ -130,7 +138,7 @@ html {
 }
 
 .messages-tools {
-  margin-bottom: map-get($spacers, 4);
+  margin-bottom: map-get($spacers, 2);
 }
 
 .messages-card {

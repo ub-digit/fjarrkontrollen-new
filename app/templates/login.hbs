@@ -23,7 +23,7 @@
     disabled=form.isSubmitting
   }}
     Logga in
-    {{#if form.isSubmitting}} {{fa-icon 'spinner'}} {{/if}}
+    {{#if form.isSubmitting}} <i class="fas fa-spinner fa-spin"></i> {{/if}}
   {{/bs-button}}
 {{/bs-form}}
 {{outlet}}

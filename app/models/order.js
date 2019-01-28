@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { computed } from '@ember/object';
 
 export default DS.Model.extend({
   isArchived: DS.attr('boolean'),
@@ -8,6 +9,13 @@ export default DS.Model.extend({
   stickyNoteMessage: DS.attr('string'),
   orderTypeId: DS.attr('string'),
   title: DS.attr('string'),
+  titleTruncated: computed('title', function() {
+    return this.get('title')
+      ? this.get('title')
+          .substring(0, 20)
+          .replace(/^[\s*.,]+|[.,\s]+$/g, '') + '...'
+      : '';
+  }),
   publicationYear : DS.attr('string'),
   volume: DS.attr('string'),
   issue: DS.attr('string'),

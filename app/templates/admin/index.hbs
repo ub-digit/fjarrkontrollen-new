@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-12 pt-4">
+  <div class="col-12">
     {{#bs-form
       model=this
       formLayout="vertical"
@@ -155,17 +155,17 @@
 </div>
 {{#if filteredOrders.isFulfilled}}
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 mb-3">
       Fjärrkontrollen hittade <strong>{{filteredOrders.content.meta.query.total}}</strong> ordrar
     </div>
   </div>
   {{#if (gt filteredOrders.content.meta.pagination.pages 1)}}
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 d-flex justify-content-center">
         {{bs4-paginator
           navAreaLabelText="Orders pagination"
-          previousText="Foregaende"
-          nextText="Nasta"
+          previousText="Föregående"
+          nextText="Nästa"
           currentPage=filteredOrders.content.meta.pagination.page
           totalPages=filteredOrders.content.meta.pagination.pages
           currentPageItemsCount=3
@@ -205,7 +205,7 @@
         </thead>
         <tbody>
           {{#each filteredOrders.content as |order|}}
-            <tr>
+            <tr class="{{if (eq order.id lastOrderViewed) "table-success"}}">
               <td><a href="{{href-to "admin.post" order.id}}">{{order.orderNumber}}</a></td>
               <td>
                 {{#if order.orderPath}}
@@ -216,29 +216,29 @@
                   {{/if}}
                 {{/if}}
                 {{#if order.stickyNoteId}}
-                  {{!TODO: class sticky-note not used}}
-                  <div class="sticky-note">
-                    <span class="badge badge-primary">
-                      <i class="far fa-file-alt"></i>
-                      {{#bs-tooltip placement="right"}}
-                        {{#if order.stickyNoteSubject}}
-                          <h4>{{order.stickyNoteSubject}}</h4>
-                        {{/if}}
-                          {{#if order.stickyNoteMessage}}
-                          <p>
-                            {{order.stickyNoteMessage}}
-                          </p>
-                        {{/if}}
-                      {{/bs-tooltip}}
-                    </span>
-                  </div>
+                  <span class="badge badge-primary">
+                    <i class="far fa-file-alt"></i>
+                    {{#bs-tooltip placement="right"}}
+                      {{#if order.stickyNoteSubject}}
+                        <h5>{{order.stickyNoteSubject}}</h5>
+                      {{/if}}
+                        {{#if order.stickyNoteMessage}}
+                        <p>
+                          {{order.stickyNoteMessage}}
+                        </p>
+                      {{/if}}
+                    {{/bs-tooltip}}
+                  </span>
                 {{/if}}
               </td>
               <td></td>
               <td>{{trim order.name}}</td>
               {{!TODO: class order-type not currently used}}
               <td class="order-type">{{get (find-by "id" order.orderTypeId orderTypes) "nameSv"}}</td>
-              <td>{{trim order.title}}</td>
+              <td>
+                <span class="d-xl-none">{{trim order.titleTruncated}}</span>
+                <span class="d-none d-xl-inline">{{trim order.title}}</span>
+              </td>
               <td>{{get (find-by "id" order.statusId statusGroups) "nameSv"}}</td>
               <td>
                 {{order-user-switcher
@@ -259,11 +259,11 @@
 </div>
 {{#if (gt filteredOrders.content.meta.pagination.pages 1)}}
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 d-flex justify-content-center">
       {{bs4-paginator
         navAreaLabelText="Orders pagination"
-        previousText="Foregaende"
-        nextText="Nasta"
+        previousText="Föregående"
+        nextText="Nästa"
         currentPage=filteredOrders.content.meta.pagination.page
         totalPages=filteredOrders.content.meta.pagination.pages
         currentPageItemsCount=3

@@ -7,13 +7,13 @@ import { debounce } from '@ember/runloop';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { observer } from '@ember/object';
-import { task } from 'ember-concurrency';
+//import { task } from 'ember-concurrency';
 import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
 
 const ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
-  session: inject('session'),
+  session: inject(),
 
   powerSelectOverlayedOptions: [{
     source: 'locations',
