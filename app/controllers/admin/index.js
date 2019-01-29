@@ -51,7 +51,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   sortFields: {
     order_number: 'Ordernummer',
-    name: 'Lantagare',
+    name: 'Låntagare',
     order_type_id: 'Typ',
     title: 'Titel',
     status_id: 'Status',

@@ -177,3 +177,15 @@ html {
     /* margin-bottom: map-get($spacers, 3) * -1; */
   }
 }
+
+/* Custom secondary style since default looks like shit */
+.btn-secondary {
+  @include button-variant(
+    $white,
+    $gray-400
+  );
+}
+
+.orders-table td {
+  vertical-align: middle;
+}

@@ -28,13 +28,15 @@
         <div class="order-header-tools">
           {{#if isEditing}}
             {{#bs-button
+              class="btn-sm"
               onClick=(action "cancelEditOrder" changeset)
             }}
-              Stang <i class="fas fa-times"></i>
+              Stäng <i class="fas fa-times"></i>
             {{/bs-button}}
 
             {{#bs-button
-              type="submit"
+              type="primary"
+              class="btn-sm"
               buttonType="submit"
               disabled=form.isSubmitting
             }}
@@ -45,6 +47,7 @@
           {{else}}
             {{#bs-button
               type="primary"
+              class="btn-sm"
               onClick=(action "editOrder" changeset)
             }}
               Redigera <i class="fas fa-pencil-alt fa-xs ml-1"></i>
@@ -271,8 +274,8 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Ovrig librisdata">
-              <th>Ovrig librisdata</th>
+            <tr titel="Övrig librisdata">
+              <th>Övrig librisdata</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -284,8 +287,8 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Forfattare">
-              <th>Forfattare</th>
+            <tr titel="Författare">
+              <th>Författare</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -326,8 +329,8 @@
 
               </td>
             </tr>
-            <tr titel="Publiceringsar">
-              <th>Publiceringsar</th>
+            <tr titel="Publiceringsår">
+              <th>Publiceringsår</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -406,8 +409,8 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Bestallningstyp">
-              <th>Bestallningstyp</th>
+            <tr titel="Beställningstyp">
+              <th>Beställningstyp</th>
               <td>
                 {{#if isEditing}}
                   {{#form.element
@@ -446,11 +449,11 @@
               </td>
             </tr>
 
-            <tr titel="Utanfor Norden">
-              <th>Utanfor Norden</th>
+            <tr titel="Utanför Norden">
+              <th>Utanför Norden</th>
               <td>
               {{form.element
-                label="Utanfor Norden"
+                label="Utanför Norden"
                 controlType="checkbox"
                 disabled=(not isEditing)
                 valuee=changeset.orderOutsideScandinavia
@@ -581,8 +584,8 @@
               </td>
             </tr>
 
-            <tr titel="Lanekortsnummer">
-              <th>Lanekortsnummer</th>
+            <tr titel="Lånekortsnummer">
+              <th>Lånekortsnummer</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -623,8 +626,8 @@
               </td>
             </tr>
 
-            <tr titel="Sprakval i formular">
-              <th>Sprakval i formular</th>
+            <tr titel="Språkval i formulär">
+              <th>Språkval i formulär</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -729,8 +732,8 @@
               </td>
             </tr>
 
-            <tr titel="Foretag">
-              <th>Foretag</th>
+            <tr titel="Företag">
+              <th>Företag</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -785,8 +788,8 @@
               </td>
             </tr>
 
-            <tr titel="Bestallarid">
-              <th>Bestallarid</th>
+            <tr titel="Beställarid">
+              <th>Beställarid</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
