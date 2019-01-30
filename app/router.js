@@ -9,7 +9,6 @@ const Router = Ember.Router.extend({
 Router.map(function() {
   this.route('login');
   this.route('admin', { path: '' }, function() {
-    this.route('list');
     this.route('post', { path: 'post/:id'});
     this.route('postscanned', { path: 'postscanned/:id' });
   });

@@ -41,7 +41,6 @@
               disabled=form.isSubmitting
             }}
               Spara <i class="fas fa-check"></i>
-              {{! TODO: replace other html spinners with this?}}
               {{#if form.isSubmitting}} <i class="fas fa-spinner fa-spin"></i> {{/if}}
             {{/bs-button}}
           {{else}}
@@ -917,7 +916,7 @@
               }}
 
               {{#bs-button
-                type="submit"
+                type="secondary"
                 buttonType="submit"
                 disabled=form.isSubmitting
               }}
@@ -957,7 +956,7 @@
                 controlType="textarea"
               }}
               {{#bs-button
-                type="submit"
+                type="secondary"
                 buttonType="submit"
                 disabled=form.isSubmitting
               }}

@@ -4,16 +4,14 @@ import { isEmpty } from '@ember/utils';
 import { A } from '@ember/array';
 import { inject } from '@ember/service';
 import { debounce } from '@ember/runloop';
-import ObjectProxy from '@ember/object/proxy';
-import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { observer } from '@ember/object';
 //import { task } from 'ember-concurrency';
 import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
 
-const ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
-
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   session: inject(),
+
+  isLoading: false,
 
   powerSelectOverlayedOptions: [{
     source: 'locations',
@@ -166,22 +164,19 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     }
   ),
 
-  ordersFilterChanged: observer('ordersFilter', function() {
+  ordersFilterChanged: observer(
+    'locationId',
+    'statusGroupLabel',
+    'searchTermsDebounced',
+    'orderTypeId',
+    'deliverySourceLabel',
+    'isArchivedOptionValue',
+    'toBeInvoiced',
+    'userId',
+    'sortField',
+    'sortDirection', function() {
     // Reset pagination
     this.set('currentPage', null);
-  }),
-
-  filteredOrders: computed(
-    'ordersFilter',
-    'currentPage', function() {
-      let filter = this.get('ordersFilter');
-      if(!isEmpty(this.get('currentPage'))) {
-        filter['page'] = this.get('currentPage');
-      }
-      let proxy = ObjectPromiseProxy.create({
-        promise: this.store.query('order', filter)
-      });
-      return proxy;
   }),
 
   setSearchTermsDebounced() {
