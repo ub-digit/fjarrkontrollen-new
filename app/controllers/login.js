@@ -2,19 +2,31 @@ import Ember from 'ember';
 import { inject } from '@ember/service';
 export default Ember.Controller.extend({
   session: inject(),
+  hasServerErrors: false,
 
   actions: {
-    // TODO: This function needs to take params, "method" etc? for password/github/facebook etc
+    resetServerErrors(changeset) {
+      if (this.get('hasServerErrors')) {
+        changeset.validate();
+        this.set('hasServerErrors', false);
+      }
+    },
     authenticate(changeset) {
-      // TODO: validate??
-      this.get('session')
+      return this.get('session')
         .authenticate('authenticator:gub', {
           identification: changeset.get('identification'),
           password: changeset.get('password')
         })
-        .catch((reason) => {
-          // TODO: render in template
-          this.set('errorMessage', reason.error);
+        .catch((error) => {
+          this.set('hasServerErrors', true);
+          changeset.pushErrors('identification', '');
+          if(typeof error === 'string') {
+            changeset.pushErrors('password', error);
+          }
+          else {
+            changeset.pushErrors('password', "Någonting gick fel, det går eventuellt för närvarande inte att logga in");
+            console.dir(error);
+          }
         });
     }
   }

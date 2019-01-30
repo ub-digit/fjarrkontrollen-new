@@ -1,29 +1,39 @@
-{{#if session.isAuthenticated}}
-  Is authenticated
-{{/if}}
-{{#bs-form model=changeset onSubmit=(action "authenticate" changeset) as |form|}}
-	{{! todo form.group validation=changeset... }}
-  {{form.element
-    controlType="text"
-    property="identification"
-    placeholder="X-konto"
-    autofocus=true
-    required=true
-  }}
-  {{form.element
-    controlType="password"
-    property="password"
-    placeholder="Lösenord"
-    required=true
-  }}
-  {{! type=submit ?? }}
-  {{#bs-button
-    type="primary"
-    buttonType="submit"
-    disabled=form.isSubmitting
-  }}
-    Logga in
-    {{#if form.isSubmitting}} <i class="fas fa-spinner fa-spin"></i> {{/if}}
-  {{/bs-button}}
-{{/bs-form}}
+<div class="d-flex justify-content-center">
+  <div class="card login-form-card">
+    <div class="card-body">
+      <h5 class="card-title">Logga in i Fjärrkontrollen</h5>
+        {{#bs-form
+          class="login-form"
+          model=changeset
+          onSubmit=(action "authenticate" changeset)
+        as |form|}}
+          {{form.element
+            controlType="text"
+            focusIn=(action "resetServerErrors" changeset)
+            property="identification"
+            placeholder="X-konto"
+            autofocus=true
+            required=true
+          }}
+          {{form.element
+            controlType="password"
+            focusIn=(action "resetServerErrors" changeset)
+            property="password"
+            placeholder="Lösenord"
+            required=true
+          }}
+          {{#bs-button
+            type="primary"
+            buttonType="submit"
+            disabled=(or form.isSubmitting changeset.isInvalid)
+          }}
+            Logga in
+            {{#if form.isSubmitting}}
+              <i class="fas fa-spinner fa-spin"></i>
+            {{/if}}
+          {{/bs-button}}
+        {{/bs-form}}
+    </div>
+  </div>
+</div>
 {{outlet}}

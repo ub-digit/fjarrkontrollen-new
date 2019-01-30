@@ -6,8 +6,8 @@ import lookupValidator from 'ember-changeset-validations';
 import Changeset from 'ember-changeset';
 
 export default Ember.Route.extend(UnAuthenticatedRouteMixin, {
-  routeAfterAuthentication: 'admin',
-  routeIfAlreadyAuthenticated: 'admin',
+  routeAfterAuthentication: 'admin.index',
+  routeIfAlreadyAuthenticated: 'admin.index',
 
   setupController: function(controller) {
     let credentials = new EmberObject({

@@ -4,9 +4,7 @@ import ENV from '../config/environment';
 import { inject } from '@ember/service';
 
 import {
-  isAjaxError,
-  isNotFoundError,
-  isForbiddenError
+  isUnauthorizedError
 } from 'ember-ajax/errors';
 
 export default Base.extend({
@@ -42,22 +40,13 @@ export default Base.extend({
           name: response_data.user.name
         });
       }).catch(function(error) {
-        if (isNotFoundError(error)) {
-          // handle 404 errors here
-          reject("TODO");
+        if (isUnauthorizedError(error)) {
+          // handle 401 errors here
+          reject("Fel användarnamn eller lösenord");
         }
-        else if (isForbiddenError(error)) {
-          // handle 403 errors here
-          reject("TODO");
+        else {
+          reject(error);
         }
-        else if (isAjaxError(error)) {
-          // handle all other AjaxErrors here
-          reject("TODO");
-        }
-        // other errors are handled elsewhere
-        // TODO: Will be swallowed silenty?
-        // or reject(error) ?? same??
-        throw error;
       });
     });
   },
