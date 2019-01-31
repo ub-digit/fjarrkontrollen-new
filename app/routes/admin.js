@@ -18,16 +18,5 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       emailTemplates: this.store.findAll('email-template'),
       statuses: this.store.findAll('status'),
     });
-  },
-
-  actions: {
-    loading(transition, originRoute) {
-      let controller = this.controllerFor('admin');
-      controller.set('isLoading', true);
-      transition.promise.finally(function() {
-        controller.set('isLoading', false);
-      });
-    }
   }
-
 });
