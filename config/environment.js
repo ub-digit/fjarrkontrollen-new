@@ -24,15 +24,9 @@ module.exports = function(environment) {
     }
   };
 
-  ENV.APP.serviceURL = 'http://localhost:3000';
-  ENV.APP.authenticationBaseURL = 'http://localhost:3000/session';
-
   ENV['simple-auth'] = {
     authorizer: 'authorizer:gub',
-    // Authenticator???
     //crossOriginWhitelist: ['http://localhost:4000/'],
-    //routeAfterAuthentication: 'admin',
-    //routeIfAlreadyAuthenticated: 'admin'
   };
 
   if (environment === 'development') {
@@ -41,21 +35,30 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+    ENV.APP.serviceURL = 'http://localhost:3000';
+    ENV.contentSecurityPolicyHeader = 'Disabled-Content-Security-Policy';
+    ENV.APP.authenticationBaseURL = 'http://localhost:3000/session';
   }
-
-  if (environment === 'test') {
+  else if (environment === 'test') {
     // Testem prefers this...
     ENV.locationType = 'none';
-
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
   }
-
-  if (environment === 'production') {
-
+  else if (environment === 'production') {
+    ENV.APP.serviceURL = 'https://fjarrkontrollen-server.ub.gu.se';
+    ENV.APP.authenticationBaseURL = 'https://fjarrkontrollen-server.ub.gu.se/session';
+  }
+  else if (environment === 'staging') {
+    ENV.APP.serviceURL = 'https://fjarrkontrollen-server-staging.ub.gu.se';
+    ENV.APP.authenticationBaseURL = 'https://fjarrkontrollen-server-staging.ub.gu.se/session';
+  }
+  else if (environment === 'lab') {
+    ENV.APP.serviceURL = 'https://fjarrkontrollen-server-lab.ub.gu.se';
+    ENV.APP.authenticationBaseURL = 'https://fjarrkontrollen-server-lab.ub.gu.se/session';
   }
 
   return ENV;
