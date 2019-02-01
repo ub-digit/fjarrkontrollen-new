@@ -57,9 +57,12 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   filtersExpanded: null,
 
+  defaultLocationId: computed('session.data.authenticated.userLocationId', function() {
+    return parseInt(this.get('session.data.authenticated.userLocationId'));
+  }),
+
   /* Filters */
   locationId: null,
-  //statusId: null, ???
   statusGroupLabel: null,
   orderTypeId: null,
   deliverySourceLabel: null,
@@ -110,59 +113,12 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     }
     ]));
     this.set('searchTermsDebounced', this.get('searchTerms'));
+    this.set('locationId', this.get('defaultLocationId'));
   },
 
   myOrdersFilterActive: computed('userId', function() {
     return !!this.get('userId');
   }),
-
-  ordersFilter: computed(
-    'locationId',
-    'statusGroupLabel',
-    'searchTermsDebounced',
-    'orderTypeId',
-    'deliverySourceLabel',
-    'isArchivedOptionValue',
-    'toBeInvoiced',
-    'userId',
-    'sortField',
-    'sortDirection',
-    function() {
-      let filter = {};
-
-      if(!isEmpty(this.get('locationId'))) {
-        filter['currentLocation'] = this.get('locationId');
-      }
-      if(!isEmpty(this.get('statusGroupLabel'))) {
-        filter['status_group'] = this.get('statusGroupLabel');
-      }
-      if(!isEmpty(this.get('searchTermsDebounced'))) {
-        filter['search_term'] = this.get('searchTermsDebounced');
-      }
-      if(!isEmpty(this.get('orderTypeId'))) {
-        filter['mediaType'] = this.get('orderTypeId');
-      }
-      if(!isEmpty(this.get('deliverySourceLabel'))) {
-        filter['delivery_source'] = this.get('deliverySourceLabel');
-      }
-      if(!isEmpty(this.get('isArchivedOptionValue'))) {
-        filter['is_archived'] = this.get('isArchivedOptionValue');
-      }
-      if(!isEmpty(this.get('toBeInvoiced'))) {
-        filter['to_be_invoiced'] = this.get('toBeInvoiced');
-      }
-      if(!isEmpty(this.get('userId'))) {
-        filter['user'] = this.get('userId');
-      }
-      if(!isEmpty(this.get('sortField'))) {
-        filter['sortfield'] = this.get('sortField');
-      }
-      if(!isEmpty(this.get('sortDirection'))) {
-        filter['sortdir'] = this.get('sortDirection');
-      }
-      return filter;
-    }
-  ),
 
   ordersFilterChanged: observer(
     'locationId',
@@ -186,7 +142,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   actions: {
     resetFilters() {
       [
-        'locationId',
         'statusGroupLabel',
         'orderTypeId',
         'deliverySourceLabel',
@@ -198,6 +153,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       ].forEach((filterKey) => {
         this.set(filterKey, null);
       });
+      this.set('locationId', this.get('defaultLocationId'));
     },
 
     setToBeInvoiced(value) {
