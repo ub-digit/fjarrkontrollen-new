@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { A } from '@ember/array';
 import { inject } from '@ember/service';
 import { debounce } from '@ember/runloop';
 import { observer } from '@ember/object';
@@ -58,7 +57,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   filtersExpanded: null,
 
   defaultLocationId: computed('session.data.authenticated.userLocationId', function() {
-    return parseInt(this.get('session.data.authenticated.userLocationId'));
+    return this.get('session.data.authenticated.userLocationId').toString();
   }),
 
   /* Filters */
@@ -101,19 +100,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   init() {
     this._super(...arguments);
-    this.set('isArchivedOptions', A([{
-      label: 'Visa bada aktiva och arkiverade',
-      value: '',
-    }, {
-      label: 'Visa endast aktiva',
-      value: 'true'
-    }, {
-      label: 'Visa endast arkiverade',
-      value: 'false'
-    }
-    ]));
     this.set('searchTermsDebounced', this.get('searchTerms'));
-    this.set('locationId', this.get('defaultLocationId'));
   },
 
   myOrdersFilterActive: computed('userId', function() {
