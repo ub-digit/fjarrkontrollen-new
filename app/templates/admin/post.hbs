@@ -106,8 +106,8 @@
             controlType="power-select"
             options=statusOptions
             placeholder="Välj status"
-            value=(find-by "value" changeset.statusid statusOptions)
-            onChange=(action (mut changeset.statusid) value="value")
+            value=(find-by "value" changeset.statusId statusOptions)
+            onChange=(action (mut changeset.statusId) value="value")
           as |el|
           }}
             {{#el.control
@@ -121,8 +121,8 @@
           {{/form.element}}
         {{else}}
           <p>
-            {{#if changeset.statusid}}
-              {{get (find-by "value" changeset.statusid statusOptions) "label"}}
+            {{#if changeset.statusId}}
+              {{get (find-by "value" changeset.statusId statusOptions) "label"}}
             {{else}}
                 Ej angivet
             {{/if}}
