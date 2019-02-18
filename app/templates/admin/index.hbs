@@ -7,7 +7,7 @@ as |form|
 <div class="row">
   <div class="col-12">
       <div class="row">
-        <div class="col-6 col-sm-3 col-lg-2">
+        <div class="col-6 col-sm-3 col-lg-4">
           {{#form.element
             label="Bibliotek"
             controlType="power-select"
@@ -53,7 +53,7 @@ as |form|
             onChange=(action "setSearchTerms")
           }}
         </div>
-        <div class="col-6 col-sm-3">
+        <div class="col-6 col-sm-3 col-lg-2">
           {{#form.element
             label="Beställningstyp"
             controlType="power-select"
@@ -72,7 +72,7 @@ as |form|
             {{/el.control}}
           {{/form.element}}
         </div>
-        <div class="col-12 col-lg-3  d-flex align-items-end mb-lg-2">
+        <div class="col-12 col-lg-2 d-flex align-items-end mb-lg-2">
           {{form.element
             label="Mina ordrar"
             class="form-group"
