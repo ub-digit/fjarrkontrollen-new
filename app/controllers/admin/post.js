@@ -51,7 +51,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   lastOrderViewed: null,
 
-
   printOrderUrl: computed('order.id', function() {
     return ENV.APP.serviceURL +
       "/orders/" +
@@ -115,6 +114,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   init() {
     this._super(...arguments);
     //this.set('messages', A());
+    //TODO: Move to setupController?
     this.set('messageLanguageOptions', A([{
       label: 'Svenska',
       language: 'sv',
@@ -178,11 +178,21 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   actions: {
     /** Order **/
     saveOrder(changeset) {
-      changeset.save().then(() => {
-        //this.set('message', 'Post sparad');
-        this.set('isEditing', false);
-      }).catch((error) => {
-        console.dir(error);
+      return new RSVP.Promise((resolve, reject) => {
+        changeset.save().then(() => {
+          this.get('notes').update().then(() => {
+            this.set('isEditing', false);
+            resolve();
+          }).catch((error) => {
+            //How avoid multiple error handlers
+            console.dir(error);
+            reject(error);
+          });
+        }).catch((error) => {
+          //TODO: format of error??? Probably an object, produce error and test
+          this.set('messageErrors', error);
+          reject(error);
+        });
       });
     },
     orderInvalid(changeset) {
