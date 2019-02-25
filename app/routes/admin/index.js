@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { isEmpty, isBlank } from '@ember/utils';
-import { A } from '@ember/array';
 
 export default Ember.Route.extend({
   queryParams: {
@@ -84,23 +83,18 @@ export default Ember.Route.extend({
     [
       'locations',
       'statusGroups',
+      'statuses',
       'deliverySources',
       'orderTypes',
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });
-    this.set('isArchivedOptions', A([{
-      label: 'Visa bada aktiva och arkiverade',
-      value: '',
-    }, {
-      label: 'Visa endast aktiva',
-      value: 'true'
-    }, {
-      label: 'Visa endast arkiverade',
-      value: 'false'
+    if (
+        controller.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
+        controller.get('setDefaultLocation')
+    ) {
+      controller.set('locationId', controller.get('defaultLocationId'));
+      controller.set('setDefaultLocation', false);
     }
-    ]));
-    controller.set('locationId', controller.get('defaultLocationId'));
   }
-
 });
