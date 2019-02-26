@@ -86,6 +86,7 @@ export default Ember.Route.extend({
       'statuses',
       'deliverySources',
       'orderTypes',
+      'users'
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });
