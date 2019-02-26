@@ -63,7 +63,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   /* Filters */
   locationId: null,
-  statusGroupLabel: null,
+  statusGroupLabel: 'all',
   orderTypeId: null,
   deliverySourceLabel: null,
   isArchivedOptionValue: 'false',
@@ -141,7 +141,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   actions: {
     resetFilters() {
       [
-        'statusGroupLabel',
         'orderTypeId',
         'deliverySourceLabel',
         'toBeInvoiced',
@@ -152,6 +151,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         this.set(filterKey, null);
       });
       this.set('isArchivedOptionValue', 'false');
+      this.set('statusGroupLabel', 'all');
       this.set('locationId', this.get('defaultLocationId'));
     },
 
