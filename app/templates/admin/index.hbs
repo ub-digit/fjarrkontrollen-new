@@ -235,15 +235,15 @@ as |form|
               <span class="d-xl-none">{{trim order.titleTruncated}}</span>
               <span class="d-none d-xl-inline">{{trim order.title}}</span>
             </td>
-            <td>{{get (find-by "id" order.statusId statusGroups) "nameSv"}}</td>
+            <td>{{get (find-by "id" order.statusId statuses) "nameSv"}}</td>
             <td>
               {{order-user-switcher
                 setOrderAssignedUserPromise=setOrderAssignedUserPromise
                 orderId=order.id
                 assignedUsername=(get (find-by "id" order.userId users) "xkonto")
                 assignedUserId=order.userId
-                loggedInUsername=session.data.authenticated.username
-                loggedInUserId=session.data.authenticated.userid
+                loggedInUsername=sessionAccount.username
+                loggedInUserId=sessionAccount.userid
               }}
             </td>
           </tr>

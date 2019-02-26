@@ -6,11 +6,12 @@ import { debounce } from '@ember/runloop';
 import { observer } from '@ember/object';
 //import { task } from 'ember-concurrency';
 import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
+import { A } from '@ember/array';
 
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
-  session: inject(),
+  sessionAccount: inject(),
 
-  isLoading: false,
+  setDefaultLocation: true, //hack
 
   powerSelectOverlayedOptions: [{
     source: 'locations',
@@ -56,8 +57,8 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   filtersExpanded: null,
 
-  defaultLocationId: computed('session.data.authenticated.userLocationId', function() {
-    return this.get('session.data.authenticated.userLocationId').toString();
+  defaultLocationId: computed('sessionAccount.userLocationId', function() {
+    return this.get('sessionAccount.userLocationId').toString();
   }),
 
   /* Filters */
@@ -65,7 +66,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   statusGroupLabel: null,
   orderTypeId: null,
   deliverySourceLabel: null,
-  isArchivedOptionValue: null,
+  isArchivedOptionValue: 'false',
   toBeInvoiced: null,
   userId: null,
   searchTermsDebounced: null,
@@ -101,6 +102,17 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   init() {
     this._super(...arguments);
     this.set('searchTermsDebounced', this.get('searchTerms'));
+    this.set('isArchivedOptions', A([{
+      label: 'Visa bada aktiva och arkiverade',
+      value: '',
+    }, {
+      label: 'Visa endast aktiva',
+      value: 'false'
+    }, {
+      label: 'Visa endast arkiverade',
+      value: 'true'
+    }
+    ]));
   },
 
   myOrdersFilterActive: computed('userId', function() {
@@ -132,7 +144,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         'statusGroupLabel',
         'orderTypeId',
         'deliverySourceLabel',
-        'isArchivedOptionValue',
         'toBeInvoiced',
         'userId',
         'searchTermsDebounced',
@@ -140,6 +151,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       ].forEach((filterKey) => {
         this.set(filterKey, null);
       });
+      this.set('isArchivedOptionValue', 'false');
       this.set('locationId', this.get('defaultLocationId'));
     },
 
@@ -149,7 +161,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
     setMyOrders(value) {
       this.set('userId', value
-        ? this.get('session.data.authenticated.userid')
+        ? this.get('sessionAccount.userid')
         : null
       );
     },
