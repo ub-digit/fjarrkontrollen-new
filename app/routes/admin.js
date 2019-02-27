@@ -12,9 +12,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       statusGroups: this.store.findAll('status-group'),
       orderTypes: this.store.findAll('order-type'),
       deliverySources: this.store.findAll('delivery-source'),
+      users: this.store.findAll('user'),
 
       //Used by order page only
-      users: this.store.findAll('user'),
       emailTemplates: this.store.findAll('email-template'),
       statuses: this.store.findAll('status'),
     });
