@@ -5,8 +5,13 @@
     {{!perhaps should be just button, nav is semantically confusing}}
     {{#navbar.nav class="flex-grow-1" as |nav| }}
       {{#nav.item}}
-        {{#bs-button type="link" onClick=(action "showScanModal")}}
+        {{#bs-button type="link" onClick=(action (mut isShowingScanModal) true)}}
           <i class="fas fa-barcode"></i> Scanna streckkod
+        {{/bs-button}}
+      {{/nav.item}}
+      {{#nav.item}}
+        {{#bs-button type="link" onClick=(action (mut isShowingSetRequestedScanModal) true)}}
+          <i class="fas fa-barcode"></i> Beställd
         {{/bs-button}}
       {{/nav.item}}
     {{/navbar.nav}}
@@ -15,44 +20,15 @@
   {{/navbar.content}}
 {{/bs-navbar}}
 <div class="container-fluid">
-  {{#bs-modal
+  {{scan-order-modal
+    title="Scanna streckkod på ordern"
+    onSubmit=(action "scan")
     open=isShowingScanModal
-    onHide=(action (mut isShowingScanModal) false)
-      as |modal|
   }}
-    {{#modal.header}}
-      <h4 class="modal-title">Scanna streckkod på ordern</h4>
-    {{/modal.header}}
-    {{#with (changeset barcodeData BarcodeDataValidations) as |changeset|}}
-      {{#modal.body}}
-        {{#if barcodeError}}
-          {{#bs-alert type="danger" dismissible=false}}
-            {{barcodeError}}
-          {{/bs-alert}}
-        {{/if}}
-        {{#bs-form
-          model=changeset
-          onSubmit=(action "scan" changeset)
-          isSubmitting=isBarcodeFormSubmitting
-        as |form|
-        }}
-          {{form.element
-            controlType="text"
-            label="Streckkod"
-            placeholder="Scanna streckkod (exempel: 2014052015160216)"
-            property="barcode"
-          }}
-        {{/bs-form}}
-      {{/modal.body}}
-      {{#modal.footer}}
-        {{#bs-button onClick=(action modal.close) type="secondary"}}Avbryt{{/bs-button}}
-        {{#bs-button
-          onClick=(action modal.submit)
-          type="success"
-          disabled=(or isBarcodeFormSubmitting changeset.isInvalid)
-        }}Skicka{{/bs-button}}
-      {{/modal.footer}}
-    {{/with}}
-  {{/bs-modal}}
+  {{scan-order-modal
+    title="Ändra orderstatus till beställd"
+    onSubmit=(action "scanRequested")
+    open=isShowingSetRequestedScanModal
+  }}
   {{liquid-outlet}}
 </div>

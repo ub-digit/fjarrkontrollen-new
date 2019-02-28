@@ -18,5 +18,15 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       emailTemplates: this.store.findAll('email-template'),
       statuses: this.store.findAll('status'),
     });
+  },
+
+  setupController(controller, model) {
+    this._super(...arguments); // This sets model
+    [
+      'statuses'
+    ].forEach(function (property) {
+      controller.set(property, model[property]);
+    });
   }
+
 });
