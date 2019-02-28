@@ -1,33 +1,70 @@
 import Ember from 'ember';
 import { inject } from '@ember/service';
-
-import EmberObject from '@ember/object';
-import BarcodeDataValidations from '../validations/barcode-data';
+import { isArray } from '@ember/array';
+import RSVP from 'rsvp';
 
 export default Ember.Controller.extend({
-  session: inject('session'),
+  session: inject(),
+  toast: inject(),
 
-  BarcodeDataValidations,
   isShowingScanModal: false,
-  isBarcodeFormSubmitting: false, //Hack
-  barcodeError: null,
+  isShowingSetRequestedScanModal: false,
+
+  findOrderPromise(barcode) {
+    return this.store.findRecord('order', barcode).catch((error) => {
+      if (
+          isArray(error.errors) &&
+          error.errors[0] &&
+          error.errors[0].status == '404'
+         ) {
+        throw 'Ingen order med numret hittades';
+      }
+      else {
+        throw error;
+      }
+    });
+  },
 
   actions: {
     logout() {
       this.get('session').invalidate();
     },
-    showScanModal() {
-      this.set('barcodeData', new EmberObject({ barcode: null }));
-      this.set('isShowingScanModal', true);
-      this.set('barcodeError', null);
-    },
-    scan(changeset) {
-      return this.store.findRecord('order', changeset.get('barcode')).then((record) => {
+
+    scan(barcode) {
+      return this.findOrderPromise(barcode).then((order) => {
         this.set('isShowingScanModal', false);
-        this.transitionToRoute('admin.post', record.get('id'));
-      }).catch((error) => {
-        this.set('barcodeError', 'Ingen order med numret hittades');
-      })
+        this.transitionToRoute('admin.post', order.get('id'));
+      });
     },
+
+    scanRequested(barcode) {
+      return new RSVP.Promise((resolve, reject) => {
+        this.findOrderPromise(barcode).then((order) => {
+          let requestedStatus = this.get('statuses').findBy('nameSv', 'Beställd');
+
+          if (requestedStatus.get('id') == order.get('statusId')) {
+            this.get('toast').warning(
+              `Order status är redan satt till beställd för order <b>${barcode}</b>.`,
+              'Status redan satt'
+            );
+            resolve();
+          }
+          else {
+            order.set('statusId', requestedStatus.get('id'));
+            order.save().then(() => {
+              this.get('toast').success(
+                  `Order status ändrad till beställd för order <b>${barcode}</b>.`,
+                  'Status ändrad'
+                  );
+              resolve();
+            }).catch((error) => {
+              reject(error);
+            });
+          }
+        }).catch((error) => {
+          reject(error);
+        });
+      });
+    }
   }
 });
