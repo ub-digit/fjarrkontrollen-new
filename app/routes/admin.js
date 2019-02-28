@@ -21,7 +21,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   setupController(controller, model) {
-    this._super(...arguments); // This sets model
     [
       'statuses'
     ].forEach(function (property) {

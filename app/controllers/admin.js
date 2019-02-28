@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
   toast: inject(),
 
   isShowingScanModal: false,
-  isShowingSetRequestedScanModal: false,
+  isShowingSetDeliveredScanModal: false,
 
   findOrderPromise(barcode) {
     return this.store.findRecord('order', barcode).catch((error) => {
@@ -37,23 +37,23 @@ export default Ember.Controller.extend({
       });
     },
 
-    scanRequested(barcode) {
+    scanDelivered(barcode) {
       return new RSVP.Promise((resolve, reject) => {
         this.findOrderPromise(barcode).then((order) => {
-          let requestedStatus = this.get('statuses').findBy('nameSv', 'Beställd');
+          let deliveredStatus = this.get('statuses').findBy('nameSv', 'Levererad');
 
-          if (requestedStatus.get('id') == order.get('statusId')) {
+          if (deliveredStatus.get('id') == order.get('statusId')) {
             this.get('toast').warning(
-              `Order status är redan satt till beställd för order <b>${barcode}</b>.`,
+              `Order status är redan satt till levererad för order <b>${barcode}</b>.`,
               'Status redan satt'
             );
             resolve();
           }
           else {
-            order.set('statusId', requestedStatus.get('id'));
+            order.set('statusId', deliveredStatus.get('id'));
             order.save().then(() => {
               this.get('toast').success(
-                  `Order status ändrad till beställd för order <b>${barcode}</b>.`,
+                  `Order status ändrad till levererad för order <b>${barcode}</b>.`,
                   'Status ändrad'
                   );
               resolve();
