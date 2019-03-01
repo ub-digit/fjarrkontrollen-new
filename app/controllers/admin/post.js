@@ -53,15 +53,14 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   lastOrderViewed: null,
 
   librisUrl: computed('order.librisRequestId', function() {
-    return "http://iller.libris.kb.se/librisfjarrlan/lf.php?action=request&type=user&id=" +
-      this.get('order.librisRequestId');
+    return ENV.APP.librisFjarrlanURL + this.get('order.librisRequestId');
   }),
 
   printOrderUrl: computed('order.id', function() {
     return ENV.APP.serviceURL +
-      "/orders/" +
-      this.get("order.id") +
-      ".pdf?token=" +
+      '/orders/' +
+      this.get('order.id') +
+      '.pdf?token=' +
       this.get('session.data.authenticated.token');
   }),
 
