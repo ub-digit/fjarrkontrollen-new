@@ -10,8 +10,8 @@
         {{/bs-button}}
       {{/nav.item}}
       {{#nav.item}}
-        {{#bs-button type="link" onClick=(action (mut isShowingSetRequestedScanModal) true)}}
-          <i class="fas fa-barcode"></i> Beställd
+        {{#bs-button type="link" onClick=(action (mut isShowingSetDeliveredScanModal) true)}}
+          <i class="fas fa-barcode"></i> Levererad
         {{/bs-button}}
       {{/nav.item}}
     {{/navbar.nav}}
@@ -26,9 +26,9 @@
     open=isShowingScanModal
   }}
   {{scan-order-modal
-    title="Ändra orderstatus till beställd"
-    onSubmit=(action "scanRequested")
-    open=isShowingSetRequestedScanModal
+    title="Ändra orderstatus till levererad"
+    onSubmit=(action "scanDelivered")
+    open=isShowingSetDeliveredScanModal
   }}
   {{liquid-outlet}}
 </div>
