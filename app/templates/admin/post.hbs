@@ -76,24 +76,24 @@
         {{#if isEditing}}
           {{#form.element
             controlType="power-select"
-            options=locations
-            value=(find-by "id" changeset.locationId locations)
-            onChange=(action (mut changeset.locationId) value="id")
+            options=pickupLocations
+            value=(find-by "id" changeset.pickupLocationId pickupLocations)
+            onChange=(action (mut changeset.pickupLocationId) value="id")
           as |el|
           }}
             {{#el.control
               searchField="nameSv"
               searchEnabled=true
               searchPlaceholder="Type your name"
-            as |location|
+            as |pickupLocation|
             }}
-              {{location.nameSv}}
+              {{pickupLocation.nameSv}}
             {{/el.control}}
           {{/form.element}}
         {{else}}
           <p>
-            {{#if changeset.locationId}}
-              {{get (find-by "id" changeset.locationId locations) "nameSv"}}
+            {{#if changeset.pickupLocationId}}
+              {{get (find-by "id" changeset.pickupLocationId pickupLocations) "nameSv"}}
             {{else}}
               Ej angivet
             {{/if}}

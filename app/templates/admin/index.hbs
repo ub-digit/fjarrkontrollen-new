@@ -11,9 +11,9 @@ as |form|
           {{#form.element
             label="Bibliotek"
             controlType="power-select"
-            options=locationOptions
-            value=(find-by "value" locationId locationOptions)
-            onChange=(action (mut locationId) value="value")
+            options=pickupLocationOptions
+            value=(find-by "value" pickupLocationId pickupLocationOptions)
+            onChange=(action (mut pickupLocationId) value="value")
           as |el|
           }}
             {{#el.control
