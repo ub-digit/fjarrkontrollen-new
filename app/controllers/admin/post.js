@@ -19,6 +19,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   NoteValidations,
 
   session: inject(),
+
   userId: computed.reads('session.data.authenticated.userid'),
 
   powerSelectOverlayedOptions: [{
@@ -50,6 +51,11 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   addBiblioInfo: true,
 
   lastOrderViewed: null,
+
+  librisUrl: computed('order.librisRequestId', function() {
+    return "http://iller.libris.kb.se/librisfjarrlan/lf.php?action=request&type=user&id=" +
+      this.get('order.librisRequestId');
+  }),
 
   printOrderUrl: computed('order.id', function() {
     return ENV.APP.serviceURL +

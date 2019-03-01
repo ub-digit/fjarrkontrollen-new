@@ -234,8 +234,8 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris LF Number">
-              <th>Libris LF Number</th>
+            <tr titel="Libris LF number">
+              <th>Libris LF number</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -247,21 +247,27 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris Request Id">
-              <th>Libris Request Id</th>
+            <tr titel="Libris request id">
+              <th>Libris request id</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
                   controlType="text"
                   property="librisRequestId"
                 }}
-                {{else}}
-                  {{changeset.librisRequestId}}
+                {{else if changeset.librisRequestId}}
+                  <a
+                    target="_blank"
+                    href="{{librisUrl}}"
+                  >
+                    {{changeset.librisRequestId}}
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris Id">
-              <th>Libris Id</th>
+            <tr titel="Libris id">
+              <th>Libris id</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
