@@ -11,11 +11,11 @@ import { A } from '@ember/array';
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   sessionAccount: inject(),
 
-  setDefaultLocation: true, //hack
+  setDefaultPickupLocation: true, //hack
 
   powerSelectOverlayedOptions: [{
-    source: 'locations',
-    target: 'locationOptions',
+    source: 'pickupLocations',
+    target: 'pickupLocationOptions',
     valueProperty: 'id',
     labelProperty: 'nameSv',
     noneLabel: 'Alla bibliotek'
@@ -34,7 +34,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   }],
 
   queryParams: {
-    locationId: 'location',
+    pickupLocationId: 'pickupLocation',
     statusGroupLabel: 'status_group',
     searchTermsDebounced: 'search',
     orderTypeId: 'order_type',
@@ -57,12 +57,12 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   filtersExpanded: null,
 
-  defaultLocationId: computed('sessionAccount.userLocationId', function() {
-    return this.get('sessionAccount.userLocationId').toString();
+  defaultPickupLocationId: computed('sessionAccount.userPickupLocationId', function() {
+    return this.get('sessionAccount.userPickupLocationId').toString();
   }),
 
   /* Filters */
-  locationId: null,
+  pickupLocationId: null,
   statusGroupLabel: 'all',
   orderTypeId: null,
   deliverySourceLabel: null,
@@ -120,7 +120,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   }),
 
   ordersFilterChanged: observer(
-    'locationId',
+    'pickupLocationId',
     'statusGroupLabel',
     'searchTermsDebounced',
     'orderTypeId',
@@ -152,7 +152,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       });
       this.set('isArchivedOptionValue', 'false');
       this.set('statusGroupLabel', 'all');
-      this.set('locationId', this.get('defaultLocationId'));
+      this.set('pickupLocationId', this.get('defaultPickupLocationId'));
     },
 
     setToBeInvoiced(value) {

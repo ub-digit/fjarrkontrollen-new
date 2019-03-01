@@ -6,6 +6,7 @@ import { assert } from '@ember/debug';
 function buildOptions(settings) {
   //@each??
   return computed(settings['source'], function() {
+    console.log(this);
     let modelRecords = this.get(settings['source']);
     let options = A([]);
     if (settings['noneLabel']) {
@@ -14,6 +15,7 @@ function buildOptions(settings) {
         label: settings['noneLabel'],
       });
     }
+    console.log(modelRecords);
     modelRecords.forEach((record) => {
       let option = {
         value: record.get(settings['valueProperty']),

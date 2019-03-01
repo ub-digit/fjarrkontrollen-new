@@ -3,7 +3,7 @@ import { isEmpty, isBlank } from '@ember/utils';
 
 export default Ember.Route.extend({
   queryParams: {
-    locationId: {
+    pickupLocationId: {
       refreshModel: true
     },
     statusGroupLabel: {
@@ -41,8 +41,8 @@ export default Ember.Route.extend({
   model(params) {
     let filter = {};
     //TODO: Replace with mappings hash
-    if (!isEmpty(params.locationId)) {
-      filter['currentLocation'] = params.locationId;
+    if (!isEmpty(params.pickupLocationId)) {
+      filter['currentPickupLocation'] = params.pickupLocationId;
     }
     if (!isEmpty(params.statusGroupLabel)) {
       filter['status_group'] = params.statusGroupLabel;
@@ -81,7 +81,7 @@ export default Ember.Route.extend({
     this._super(...arguments); // This sets model
     let optionModels = this.modelFor('admin');
     [
-      'locations',
+      'pickupLocations',
       'statusGroups',
       'statuses',
       'deliverySources',
@@ -92,10 +92,10 @@ export default Ember.Route.extend({
     });
     if (
         controller.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
-        controller.get('setDefaultLocation')
+        controller.get('setDefaultPickupLocation')
     ) {
-      controller.set('locationId', controller.get('defaultLocationId'));
-      controller.set('setDefaultLocation', false);
+      controller.set('pickupLocationId', controller.get('defaultPickupLocationId'));
+      controller.set('setDefaultPickupLocation', false);
     }
   }
 });
