@@ -11,14 +11,20 @@ import { A } from '@ember/array';
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   sessionAccount: inject(),
 
-  setDefaultPickupLocation: true, //hack
+  setDefaultFiltersValues: true, //hack
 
   powerSelectOverlayedOptions: [{
+    source: 'managingGroups',
+    target: 'managingGroupOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    noneLabel: 'Alla handläggningsgrupper'
+  }, {
     source: 'pickupLocations',
     target: 'pickupLocationOptions',
     valueProperty: 'id',
     labelProperty: 'nameSv',
-    noneLabel: 'Alla bibliotek'
+    noneLabel: 'Alla avhämtningsbibliotek'
   }, {
     source: 'orderTypes',
     target: 'orderTypeOptions',
@@ -34,7 +40,8 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   }],
 
   queryParams: {
-    pickupLocationId: 'pickupLocation',
+    managingGroupId: 'managing_group',
+    pickupLocationId: 'pickup_location',
     statusGroupLabel: 'status_group',
     searchTermsDebounced: 'search',
     orderTypeId: 'order_type',
@@ -58,10 +65,16 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   filtersExpanded: null,
 
   defaultPickupLocationId: computed('sessionAccount.userPickupLocationId', function() {
-    return this.get('sessionAccount.userPickupLocationId').toString();
+    return this.get('sessionAccount.userPickupLocationId') ? this.get('sessionAccount.userPickupLocationId').toString() : null;
   }),
 
+  defaultManagingGroupId: computed('sessionAccount.userManagingGroupId', function() {
+    return this.get('sessionAccount.userManagingGroupId') ? this.get('sessionAccount.userManagingGroupId').toString() : null;
+  }),
+
+
   /* Filters */
+  managingGroupId: null,
   pickupLocationId: null,
   statusGroupLabel: 'all',
   orderTypeId: null,

@@ -71,7 +71,36 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <h5>Handläggande enhet</h5>
+        <h5>Handläggningsgrupp</h5>
+
+        {{#if isEditing}}
+          {{#form.element
+            controlType="power-select"
+            options=managingGroups
+            value=(find-by "id" changeset.managingGroupId managingGroups)
+            onChange=(action (mut changeset.managingGroupId) value="id")
+          as |el|
+          }}
+            {{#el.control
+              searchField="name"
+              searchEnabled=true
+              searchPlaceholder="Type your name"
+            as |pickupLocation|
+            }}
+              {{pickupLocation.name}}
+            {{/el.control}}
+          {{/form.element}}
+        {{else}}
+          <p>
+            {{#if changeset.managingGroupId}}
+              {{get (find-by "id" changeset.managingGroupId managingGroups) "name"}}
+            {{else}}
+              Ej angivet
+            {{/if}}
+          </p>
+        {{/if}}
+
+        <h5>Avhämtningsbibliotek</h5>
 
         {{#if isEditing}}
           {{#form.element

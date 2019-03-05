@@ -37,7 +37,8 @@ export default Base.extend({
           const token = response_data.access_token;
           const data = {
             token: token,
-            userLocationId: response_data.user.pickup_location_id,
+            userManagingGroupId: response_data.user.managing_group_id,
+            userPickupLocationId: response_data.user.pickup_location_id,
             username: response_data.user.xkonto,
             userid: response_data.user.id,
             name: response_data.user.name

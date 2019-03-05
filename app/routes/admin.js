@@ -8,7 +8,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   //status group vs statuses differance?
   model() {
     return RSVP.hash({
-      pickupLocations: this.store.findAll('pickup_location'),
+      managingGroups: this.store.findAll('managing-group'),
+      pickupLocations: this.store.findAll('pickup-location'),
       statusGroups: this.store.findAll('status-group'),
       orderTypes: this.store.findAll('order-type'),
       deliverySources: this.store.findAll('delivery-source'),
