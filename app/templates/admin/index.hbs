@@ -6,131 +6,151 @@ as |form|
 }}
 <div class="row">
   <div class="col-12">
-      <div class="row">
-        <div class="col-6 col-sm-3 col-lg-4">
-          {{#form.element
-            label="Bibliotek"
-            controlType="power-select"
-            options=pickupLocationOptions
-            value=(find-by "value" pickupLocationId pickupLocationOptions)
-            onChange=(action (mut pickupLocationId) value="value")
-          as |el|
+    <div class="row">
+      <div class="col-6 col-sm-3 col-lg-4">
+        {{#form.element
+          label="Handläggningsgrupp"
+          controlType="power-select"
+          options=managingGroupOptions
+          value=(find-by "value" managingGroupId managingGroupOptions)
+          onChange=(action (mut managingGroupId) value="value")
+        as |el|
+        }}
+          {{#el.control
+            searchField="label"
+            searchEnabled=true
+            searchPlaceholder="Type your name"
+          as |option|
           }}
-            {{#el.control
-              searchField="label"
-              searchEnabled=true
-              searchPlaceholder="Type your name"
-            as |option|
-            }}
-              {{option.label}}
-            {{/el.control}}
-          {{/form.element}}
-        </div>
-        <div class="col-6 col-sm-3 col-lg-2">
-          {{#form.element
-            label="Statusgrupp"
-            controlType="power-select"
-            options=statusGroups
-            value=(find-by "label" statusGroupLabel statusGroups)
-            onChange=(action (mut statusGroupLabel) value="label")
-          as |el|
-          }}
-            {{#el.control
-              searchField="nameSv"
-              searchEnabled=true
-              searchPlaceholder="Type your name"
-            as |statusGroup|
-            }}
-              {{statusGroup.nameSv}}
-            {{/el.control}}
-          {{/form.element}}
-        </div>
-        <div class="col-6 col-sm-3 col-lg-2">
-          {{form.element
-            label="Sök i fritext"
-            controlType="text"
-            value=searchTerms
-            onChange=(action "setSearchTerms")
-          }}
-        </div>
-        <div class="col-6 col-sm-3 col-lg-2">
-          {{#form.element
-            label="Beställningstyp"
-            controlType="power-select"
-            options=orderTypeOptions
-            value=(find-by "value" orderTypeId orderTypeOptions)
-            onChange=(action (mut orderTypeId) value="value")
-          as |el|
-          }}
-            {{#el.control
-              searchField="label"
-              searchEnabled=true
-              searchPlaceholder="Type your name"
-            as |option|
-            }}
-              {{option.label}}
-            {{/el.control}}
-          {{/form.element}}
-        </div>
-        <div class="col-12 col-lg-2 d-flex align-items-end mb-lg-2">
-          {{form.element
-            label="Mina ordrar"
-            class="form-group"
-            controlType="checkbox"
-            value=myOrdersFilterActive
-            onChange=(action "setMyOrders")
-          }}
-        </div>
-        {{#liquid-if filtersExpanded class="col-12"}}
-          <div class="row">
-            <div class="col-6 col-lg-2">
-              {{#form.element
-                label="Leveransställe"
-                controlType="power-select"
-                options=deliverySourceOptions
-                value=(find-by "value" deliverySourceLabel deliverySourceOptions)
-                onChange=(action (mut deliverySourceLabel) value="value")
-              as |el|
-                }}
-                {{#el.control
-                  searchField="label"
-                  searchEnabled=true
-                  searchPlaceholder="Type your name"
-                as |option|
-                }}
-                  {{option.label}}
-                {{/el.control}}
-              {{/form.element}}
-            </div>
-            <div class="col-6 col-lg-2">
-              {{#form.element
-                label="Arkiverade & Aktiva"
-                controlType="power-select"
-                options=isArchivedOptions
-                value=(find-by "value" isArchivedOptionValue isArchivedOptions)
-                onChange=(action (mut isArchivedOptionValue) value="value")
-              as |el|
-              }}
-                {{#el.control
-                  searchEnabled=false
-                as |option|
-                }}
-                  {{option.label}}
-                {{/el.control}}
-              {{/form.element}}
-            </div>
-            <div class="col-12 col-lg-8 d-flex align-items-end  mb-lg-2">
-              {{form.element
-                label="Skall faktureras"
-                class="form-group"
-                controlType="checkbox"
-                value=toBeInvoiced
-                onChange=(action "setToBeInvoiced")
-              }}
-            </div>
-          </div>
-        {{/liquid-if}}
+            {{option.label}}
+          {{/el.control}}
+        {{/form.element}}
       </div>
+      <div class="col-6 col-sm-3 col-lg-4">
+        {{#form.element
+          label="Avhämtningsbibliotek"
+          controlType="power-select"
+          options=pickupLocationOptions
+          value=(find-by "value" pickupLocationId pickupLocationOptions)
+          onChange=(action (mut pickupLocationId) value="value")
+        as |el|
+        }}
+          {{#el.control
+            searchField="label"
+            searchEnabled=true
+            searchPlaceholder="Type your name"
+          as |option|
+          }}
+            {{option.label}}
+          {{/el.control}}
+        {{/form.element}}
+      </div>
+      <div class="col-6 col-sm-3 col-lg-2">
+        {{#form.element
+          label="Statusgrupp"
+          controlType="power-select"
+          options=statusGroups
+          value=(find-by "label" statusGroupLabel statusGroups)
+          onChange=(action (mut statusGroupLabel) value="label")
+        as |el|
+        }}
+          {{#el.control
+            searchField="nameSv"
+            searchEnabled=true
+            searchPlaceholder="Type your name"
+          as |statusGroup|
+          }}
+            {{statusGroup.nameSv}}
+          {{/el.control}}
+        {{/form.element}}
+      </div>
+      <div class="col-6 col-sm-3 col-lg-2">
+        {{form.element
+          label="Sök i fritext"
+          controlType="text"
+          value=searchTerms
+          onChange=(action "setSearchTerms")
+        }}
+      </div>
+
+      <div class="col-6 col-sm-3 col-lg-2">
+        {{#form.element
+          label="Beställningstyp"
+          controlType="power-select"
+          options=orderTypeOptions
+          value=(find-by "value" orderTypeId orderTypeOptions)
+          onChange=(action (mut orderTypeId) value="value")
+        as |el|
+        }}
+          {{#el.control
+            searchField="label"
+            searchEnabled=true
+            searchPlaceholder="Type your name"
+          as |option|
+          }}
+            {{option.label}}
+          {{/el.control}}
+        {{/form.element}}
+      </div>
+      <div class="col-12 col-lg-2 d-flex align-items-end mb-lg-2">
+        {{form.element
+          label="Mina ordrar"
+          class="form-group"
+          controlType="checkbox"
+          value=myOrdersFilterActive
+          onChange=(action "setMyOrders")
+        }}
+      </div>
+      {{#liquid-if filtersExpanded class="col-12"}}
+        <div class="row">
+          <div class="col-6 col-lg-2">
+            {{#form.element
+              label="Leveransställe"
+              controlType="power-select"
+              options=deliverySourceOptions
+              value=(find-by "value" deliverySourceLabel deliverySourceOptions)
+              onChange=(action (mut deliverySourceLabel) value="value")
+            as |el|
+              }}
+              {{#el.control
+                searchField="label"
+                searchEnabled=true
+                searchPlaceholder="Type your name"
+              as |option|
+              }}
+                {{option.label}}
+              {{/el.control}}
+            {{/form.element}}
+          </div>
+          <div class="col-6 col-lg-2">
+            {{#form.element
+              label="Arkiverade & Aktiva"
+              controlType="power-select"
+              options=isArchivedOptions
+              value=(find-by "value" isArchivedOptionValue isArchivedOptions)
+              onChange=(action (mut isArchivedOptionValue) value="value")
+            as |el|
+            }}
+              {{#el.control
+                searchEnabled=false
+              as |option|
+              }}
+                {{option.label}}
+              {{/el.control}}
+            {{/form.element}}
+          </div>
+          <div class="col-12 col-lg-8 d-flex align-items-end  mb-lg-2">
+            {{form.element
+              label="Skall faktureras"
+              class="form-group"
+              controlType="checkbox"
+              value=toBeInvoiced
+              onChange=(action "setToBeInvoiced")
+            }}
+          </div>
+        </div>
+      {{/liquid-if}}
+    </div>
   </div>
   <div class="col-12 d-flex justify-content-center border-top">
     {{#bs-button

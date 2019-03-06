@@ -3,6 +3,9 @@ import { isEmpty, isBlank } from '@ember/utils';
 
 export default Ember.Route.extend({
   queryParams: {
+    managingGroupId: {
+      refreshModel: true
+    },
     pickupLocationId: {
       refreshModel: true
     },
@@ -41,8 +44,11 @@ export default Ember.Route.extend({
   model(params) {
     let filter = {};
     //TODO: Replace with mappings hash
+    if (!isEmpty(params.managingGroupId)) {
+      filter['current_managing_group'] = params.managingGroupId;
+    }
     if (!isEmpty(params.pickupLocationId)) {
-      filter['currentPickupLocation'] = params.pickupLocationId;
+      filter['current_pickup_location'] = params.pickupLocationId;
     }
     if (!isEmpty(params.statusGroupLabel)) {
       filter['status_group'] = params.statusGroupLabel;
@@ -81,6 +87,7 @@ export default Ember.Route.extend({
     this._super(...arguments); // This sets model
     let optionModels = this.modelFor('admin');
     [
+      'managingGroups',
       'pickupLocations',
       'statusGroups',
       'statuses',
@@ -92,10 +99,11 @@ export default Ember.Route.extend({
     });
     if (
         controller.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
-        controller.get('setDefaultPickupLocation')
+        controller.get('setDefaultFiltersValues')
     ) {
+      controller.set('managingGroupId', controller.get('defaultManagingGroupId'));
       controller.set('pickupLocationId', controller.get('defaultPickupLocationId'));
-      controller.set('setDefaultPickupLocation', false);
+      controller.set('setDefaultFiltersValues', false);
     }
   }
 });
