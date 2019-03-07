@@ -39,7 +39,7 @@ export default DS.Model.extend({
   authors: DS.attr('string'),
   orderNumber: DS.attr('string'),
   formLibrary: DS.attr('string'),
-  deliveryPlace: DS.attr('string'),
+  deliveryMethodId: DS.attr('string'),
   invoicingName: DS.attr('string'),
   invoicingCompany: DS.attr('string'),
   invoicingAddress: DS.attr('string'),
