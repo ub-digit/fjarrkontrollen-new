@@ -175,6 +175,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       });
       this.set('isArchivedOptionValue', 'false');
       this.set('statusGroupLabel', 'all');
+      this.set('managingGroupId', this.get('defaultManagingGroupId'));
       this.set('pickupLocationId', this.get('defaultPickupLocationId'));
     },
 
