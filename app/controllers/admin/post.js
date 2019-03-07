@@ -30,6 +30,13 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     disabledProperty: 'isDisabled',
     noneLabel: 'Ej angivet'
   }, {
+    source: 'deliveryMethods',
+    target: 'deliveryMethodOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    disabledProperty: 'isDisabled',
+    noneLabel: 'Ej angivet'
+  }, {
     source: 'statuses',
     target: 'statusOptions',
     valueProperty: 'id',

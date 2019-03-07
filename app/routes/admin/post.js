@@ -20,6 +20,7 @@ export default Ember.Route.extend(ResetScroll, {
       'pickupLocations',
       'statuses',
       'deliverySources',
+      'deliveryMethods',
       'orderTypes',
       'emailTemplates',
       'users'

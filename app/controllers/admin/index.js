@@ -37,6 +37,12 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     valueProperty: 'label',
     labelProperty: 'name',
     noneLabel: 'Alla leveransställen'
+  }, {
+    source: 'deliveryMethods',
+    target: 'deliveryMethodOptions',
+    valueProperty: 'label',
+    labelProperty: 'name',
+    noneLabel: 'Alla leveransmetoder'
   }],
 
   queryParams: {
@@ -46,6 +52,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     searchTermsDebounced: 'search',
     orderTypeId: 'order_type',
     deliverySourceLabel: 'delivery_source',
+    deliveryMethodLabel: 'delivery_method',
     isArchivedOptionValue: 'is_archived',
     toBeInvoiced: 'to_be_invoiced',
     userId: 'user',
@@ -79,6 +86,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   statusGroupLabel: 'all',
   orderTypeId: null,
   deliverySourceLabel: null,
+  deliveryMethodLabel: null,
   isArchivedOptionValue: 'false',
   toBeInvoiced: null,
   userId: null,
@@ -138,6 +146,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     'searchTermsDebounced',
     'orderTypeId',
     'deliverySourceLabel',
+    'deliveryMethodLabel',
     'isArchivedOptionValue',
     'toBeInvoiced',
     'userId',
@@ -156,6 +165,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       [
         'orderTypeId',
         'deliverySourceLabel',
+        'deliveryMethodLabel',
         'toBeInvoiced',
         'userId',
         'searchTermsDebounced',

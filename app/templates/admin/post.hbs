@@ -468,17 +468,28 @@
                 {{/if}}
               </td>
             </tr>
-
-            <tr titel="Leveransalternativ">
-              <th>Leveransalternativ</th>
+            <tr titel="Leveransmetod">
+              <th>Leveransmetod</th>
               <td>
                 {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="deliveryPlace"
-                }}
+                  {{#form.element
+                    controlType="power-select"
+                    options=deliveryMethods
+                    value=(find-by "id" changeset.deliveryMethodId deliveryMethods)
+                    onChange=(action (mut changeset.deliveryMethodId) value="id")
+                  as |el|
+                  }}
+                    {{#el.control
+                      searchField="name"
+                      searchEnabled=true
+                      searchPlaceholder="Type your name"
+                    as |deliveryMethod|
+                    }}
+                      {{deliveryMethod.name}}
+                    {{/el.control}}
+                  {{/form.element}}
                 {{else}}
-                  {{changeset.deliveryPlace}}
+                  {{get (find-by "id" changeset.deliveryMethodId deliveryMethods) 'name'}}
                 {{/if}}
               </td>
             </tr>
@@ -530,7 +541,7 @@
         </table>
       </div>
       <div class="col-12 col-md-6">
-        <h4>Lantagare</h4>
+        <h4>Låntagare</h4>
         <table class="table table-striped {{if isEditing " table-sm"}}">
           <tbody>
             <tr titel="Namn">

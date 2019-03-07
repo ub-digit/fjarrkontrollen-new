@@ -15,7 +15,9 @@
         {{/bs-button}}
       {{/nav.item}}
     {{/navbar.nav}}
-    <span class="p-2 user-name">{{session.data.authenticated.name}}</span>
+
+    {{#bs-button type="link"}}{{session.data.authenticated.name}}{{/bs-button}}
+
     {{#bs-button type="link" onClick=(action "logout")}}Logga ut{{/bs-button}}
   {{/navbar.content}}
 {{/bs-navbar}}
@@ -30,5 +32,6 @@
     onSubmit=(action "scanDelivered")
     open=isShowingSetDeliveredScanModal
   }}
+
   {{liquid-outlet}}
 </div>

@@ -124,6 +124,25 @@ as |form|
           </div>
           <div class="col-6 col-lg-2">
             {{#form.element
+              label="Leveransmetod"
+              controlType="power-select"
+              options=deliveryMethodOptions
+              value=(find-by "value" deliveryMethodLabel deliveryMethodOptions)
+              onChange=(action (mut deliveryMethodLabel) value="value")
+            as |el|
+              }}
+              {{#el.control
+                searchField="label"
+                searchEnabled=true
+                searchPlaceholder="Type your name"
+              as |option|
+              }}
+                {{option.label}}
+              {{/el.control}}
+            {{/form.element}}
+          </div>
+          <div class="col-6 col-lg-2">
+            {{#form.element
               label="Arkiverade & Aktiva"
               controlType="power-select"
               options=isArchivedOptions

@@ -21,6 +21,9 @@ export default Ember.Route.extend({
     deliverySourceLabel: {
       refreshModel: true
     },
+    deliveryMethodLabel: {
+      refreshModel: true
+    },
     isArchivedOptionValue: {
       refreshModel: true
     },
@@ -62,6 +65,9 @@ export default Ember.Route.extend({
     if (!isEmpty(params.deliverySourceLabel)) {
       filter['delivery_source'] = params.deliverySourceLabel;
     }
+    if (!isEmpty(params.deliveryMethodLabel)) {
+      filter['delivery_method'] = params.deliveryMethodLabel;
+    }
     if (!isEmpty(params.isArchivedOptionValue)) {
       filter['is_archived'] = params.isArchivedOptionValue;
     }
@@ -92,6 +98,7 @@ export default Ember.Route.extend({
       'statusGroups',
       'statuses',
       'deliverySources',
+      'deliveryMethods',
       'orderTypes',
       'users'
     ].forEach(function (property) {
