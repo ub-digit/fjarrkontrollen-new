@@ -3,7 +3,10 @@ import { isEmpty, isBlank } from '@ember/utils';
 
 export default Ember.Route.extend({
   queryParams: {
-    locationId: {
+    managingGroupId: {
+      refreshModel: true
+    },
+    pickupLocationId: {
       refreshModel: true
     },
     statusGroupLabel: {
@@ -16,6 +19,9 @@ export default Ember.Route.extend({
       refreshModel: true
     },
     deliverySourceLabel: {
+      refreshModel: true
+    },
+    deliveryMethodLabel: {
       refreshModel: true
     },
     isArchivedOptionValue: {
@@ -41,8 +47,11 @@ export default Ember.Route.extend({
   model(params) {
     let filter = {};
     //TODO: Replace with mappings hash
-    if (!isEmpty(params.locationId)) {
-      filter['currentLocation'] = params.locationId;
+    if (!isEmpty(params.managingGroupId)) {
+      filter['current_managing_group'] = params.managingGroupId;
+    }
+    if (!isEmpty(params.pickupLocationId)) {
+      filter['current_pickup_location'] = params.pickupLocationId;
     }
     if (!isEmpty(params.statusGroupLabel)) {
       filter['status_group'] = params.statusGroupLabel;
@@ -55,6 +64,9 @@ export default Ember.Route.extend({
     }
     if (!isEmpty(params.deliverySourceLabel)) {
       filter['delivery_source'] = params.deliverySourceLabel;
+    }
+    if (!isEmpty(params.deliveryMethodLabel)) {
+      filter['delivery_method'] = params.deliveryMethodLabel;
     }
     if (!isEmpty(params.isArchivedOptionValue)) {
       filter['is_archived'] = params.isArchivedOptionValue;
@@ -81,14 +93,24 @@ export default Ember.Route.extend({
     this._super(...arguments); // This sets model
     let optionModels = this.modelFor('admin');
     [
-      'locations',
+      'managingGroups',
+      'pickupLocations',
       'statusGroups',
+      'statuses',
       'deliverySources',
+      'deliveryMethods',
       'orderTypes',
+      'users'
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });
-    controller.setProperties(optionModels);
+    if (
+        controller.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
+        controller.get('setDefaultFiltersValues')
+    ) {
+      controller.set('managingGroupId', controller.get('defaultManagingGroupId'));
+      controller.set('pickupLocationId', controller.get('defaultPickupLocationId'));
+      controller.set('setDefaultFiltersValues', false);
+    }
   }
-
 });

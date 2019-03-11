@@ -8,15 +8,26 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   //status group vs statuses differance?
   model() {
     return RSVP.hash({
-      locations: this.store.findAll('location'),
+      managingGroups: this.store.findAll('managing-group'),
+      pickupLocations: this.store.findAll('pickup-location'),
       statusGroups: this.store.findAll('status-group'),
       orderTypes: this.store.findAll('order-type'),
       deliverySources: this.store.findAll('delivery-source'),
+      deliveryMethods: this.store.findAll('delivery-method'),
+      users: this.store.findAll('user'),
 
       //Used by order page only
-      users: this.store.findAll('user'),
       emailTemplates: this.store.findAll('email-template'),
       statuses: this.store.findAll('status'),
     });
+  },
+
+  setupController(controller, model) {
+    [
+      'statuses'
+    ].forEach(function (property) {
+      controller.set(property, model[property]);
+    });
   }
+
 });

@@ -2,6 +2,7 @@ import Base from 'ember-simple-auth/authenticators/base';
 import { Promise, resolve } from 'rsvp';
 import ENV from '../config/environment';
 import { inject } from '@ember/service';
+import { run } from '@ember/runloop';
 
 import {
   isUnauthorizedError
@@ -15,9 +16,11 @@ export default Base.extend({
       this.get('ajax').request(
         `${ENV.APP.authenticationBaseURL}/${data.token}`
       ).then(() => {
-        resolve(data);
+        run(() => {
+          resolve(data);
+        });
       }, (error) => {
-        reject(error);
+        run(null, reject, error);
       });
     });
   },
@@ -29,24 +32,21 @@ export default Base.extend({
           xkonto: credentials.identification,
           password: credentials.password
         }
-      }).then(function(response_data) {
-        const token = response_data.access_token;
-        resolve({
-          authenticated: true,
-          token: token,
-          userLocationId: response_data.user.location_id,
-          username: response_data.user.xkonto,
-          userid: response_data.user.id,
-          name: response_data.user.name
+      }).then((response_data) => {
+        run(() => {
+          const token = response_data.access_token;
+          const data = {
+            token: token,
+            userManagingGroupId: response_data.user.managing_group_id,
+            userPickupLocationId: response_data.user.pickup_location_id,
+            username: response_data.user.xkonto,
+            userid: response_data.user.id,
+            name: response_data.user.name
+          };
+          resolve(data);
         });
-      }).catch(function(error) {
-        if (isUnauthorizedError(error)) {
-          // handle 401 errors here
-          reject("Fel användarnamn eller lösenord");
-        }
-        else {
-          reject(error);
-        }
+      }).catch((error) => {
+        run(null, reject, isUnauthorizedError(error) ? "Fel användarnamn eller lösenord" : error);
       });
     });
   },
@@ -54,15 +54,3 @@ export default Base.extend({
     return resolve();
   }
 });
-
-/*
-export var initialize = function(container) {
-	container.register('authenticator:custom', CustomAuthenticator);
-};
-
-export default {
-	name: 'authentication',
-	before: 'simple-auth',
-	initialize: initialize
-};
-*/

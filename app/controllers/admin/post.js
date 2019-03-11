@@ -19,11 +19,19 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   NoteValidations,
 
   session: inject(),
+
   userId: computed.reads('session.data.authenticated.userid'),
 
   powerSelectOverlayedOptions: [{
     source: 'deliverySources',
     target: 'deliverySourceOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    disabledProperty: 'isDisabled',
+    noneLabel: 'Ej angivet'
+  }, {
+    source: 'deliveryMethods',
+    target: 'deliveryMethodOptions',
     valueProperty: 'id',
     labelProperty: 'name',
     disabledProperty: 'isDisabled',
@@ -51,12 +59,15 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   lastOrderViewed: null,
 
+  librisUrl: computed('order.librisRequestId', function() {
+    return ENV.APP.librisFjarrlanURL + this.get('order.librisRequestId');
+  }),
 
   printOrderUrl: computed('order.id', function() {
     return ENV.APP.serviceURL +
-      "/orders/" +
-      this.get("order.id") +
-      ".pdf?token=" +
+      '/orders/' +
+      this.get('order.id') +
+      '.pdf?token=' +
       this.get('session.data.authenticated.token');
   }),
 
@@ -115,6 +126,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   init() {
     this._super(...arguments);
     //this.set('messages', A());
+    //TODO: Move to setupController?
     this.set('messageLanguageOptions', A([{
       label: 'Svenska',
       language: 'sv',
@@ -178,11 +190,21 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   actions: {
     /** Order **/
     saveOrder(changeset) {
-      changeset.save().then(() => {
-        //this.set('message', 'Post sparad');
-        this.set('isEditing', false);
-      }).catch((error) => {
-        console.dir(error);
+      return new RSVP.Promise((resolve, reject) => {
+        changeset.save().then(() => {
+          this.get('notes').update().then(() => {
+            this.set('isEditing', false);
+            resolve();
+          }).catch((error) => {
+            //How avoid multiple error handlers
+            console.dir(error);
+            reject(error);
+          });
+        }).catch((error) => {
+          //TODO: format of error??? Probably an object, produce error and test
+          this.set('messageErrors', error);
+          reject(error);
+        });
       });
     },
     orderInvalid(changeset) {

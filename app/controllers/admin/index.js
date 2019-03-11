@@ -1,24 +1,30 @@
 import Ember from 'ember';
 import { computed } from '@ember/object';
 import { isEmpty } from '@ember/utils';
-import { A } from '@ember/array';
 import { inject } from '@ember/service';
 import { debounce } from '@ember/runloop';
 import { observer } from '@ember/object';
 //import { task } from 'ember-concurrency';
 import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
+import { A } from '@ember/array';
 
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
-  session: inject(),
+  sessionAccount: inject(),
 
-  isLoading: false,
+  setDefaultFiltersValues: true, //hack
 
   powerSelectOverlayedOptions: [{
-    source: 'locations',
-    target: 'locationOptions',
+    source: 'managingGroups',
+    target: 'managingGroupOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    noneLabel: 'Alla handläggningsgrupper'
+  }, {
+    source: 'pickupLocations',
+    target: 'pickupLocationOptions',
     valueProperty: 'id',
     labelProperty: 'nameSv',
-    noneLabel: 'Alla bibliotek'
+    noneLabel: 'Alla avhämtningsbibliotek'
   }, {
     source: 'orderTypes',
     target: 'orderTypeOptions',
@@ -31,14 +37,22 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     valueProperty: 'label',
     labelProperty: 'name',
     noneLabel: 'Alla leveransställen'
+  }, {
+    source: 'deliveryMethods',
+    target: 'deliveryMethodOptions',
+    valueProperty: 'label',
+    labelProperty: 'name',
+    noneLabel: 'Alla leveransmetoder'
   }],
 
   queryParams: {
-    locationId: 'location',
+    managingGroupId: 'managing_group',
+    pickupLocationId: 'pickup_location',
     statusGroupLabel: 'status_group',
     searchTermsDebounced: 'search',
     orderTypeId: 'order_type',
     deliverySourceLabel: 'delivery_source',
+    deliveryMethodLabel: 'delivery_method',
     isArchivedOptionValue: 'is_archived',
     toBeInvoiced: 'to_be_invoiced',
     userId: 'user',
@@ -57,13 +71,23 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   filtersExpanded: null,
 
+  defaultPickupLocationId: computed('sessionAccount.userPickupLocationId', function() {
+    return this.get('sessionAccount.userPickupLocationId') ? this.get('sessionAccount.userPickupLocationId').toString() : null;
+  }),
+
+  defaultManagingGroupId: computed('sessionAccount.userManagingGroupId', function() {
+    return this.get('sessionAccount.userManagingGroupId') ? this.get('sessionAccount.userManagingGroupId').toString() : null;
+  }),
+
+
   /* Filters */
-  locationId: null,
-  //statusId: null, ???
-  statusGroupLabel: null,
+  managingGroupId: null,
+  pickupLocationId: null,
+  statusGroupLabel: 'all',
   orderTypeId: null,
   deliverySourceLabel: null,
-  isArchivedOptionValue: null,
+  deliveryMethodLabel: null,
+  isArchivedOptionValue: 'false',
   toBeInvoiced: null,
   userId: null,
   searchTermsDebounced: null,
@@ -98,78 +122,31 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   init() {
     this._super(...arguments);
+    this.set('searchTermsDebounced', this.get('searchTerms'));
     this.set('isArchivedOptions', A([{
       label: 'Visa bada aktiva och arkiverade',
       value: '',
     }, {
       label: 'Visa endast aktiva',
-      value: 'true'
+      value: 'false'
     }, {
       label: 'Visa endast arkiverade',
-      value: 'false'
+      value: 'true'
     }
     ]));
-    this.set('searchTermsDebounced', this.get('searchTerms'));
   },
 
   myOrdersFilterActive: computed('userId', function() {
     return !!this.get('userId');
   }),
 
-  ordersFilter: computed(
-    'locationId',
-    'statusGroupLabel',
-    'searchTermsDebounced',
-    'orderTypeId',
-    'deliverySourceLabel',
-    'isArchivedOptionValue',
-    'toBeInvoiced',
-    'userId',
-    'sortField',
-    'sortDirection',
-    function() {
-      let filter = {};
-
-      if(!isEmpty(this.get('locationId'))) {
-        filter['currentLocation'] = this.get('locationId');
-      }
-      if(!isEmpty(this.get('statusGroupLabel'))) {
-        filter['status_group'] = this.get('statusGroupLabel');
-      }
-      if(!isEmpty(this.get('searchTermsDebounced'))) {
-        filter['search_term'] = this.get('searchTermsDebounced');
-      }
-      if(!isEmpty(this.get('orderTypeId'))) {
-        filter['mediaType'] = this.get('orderTypeId');
-      }
-      if(!isEmpty(this.get('deliverySourceLabel'))) {
-        filter['delivery_source'] = this.get('deliverySourceLabel');
-      }
-      if(!isEmpty(this.get('isArchivedOptionValue'))) {
-        filter['is_archived'] = this.get('isArchivedOptionValue');
-      }
-      if(!isEmpty(this.get('toBeInvoiced'))) {
-        filter['to_be_invoiced'] = this.get('toBeInvoiced');
-      }
-      if(!isEmpty(this.get('userId'))) {
-        filter['user'] = this.get('userId');
-      }
-      if(!isEmpty(this.get('sortField'))) {
-        filter['sortfield'] = this.get('sortField');
-      }
-      if(!isEmpty(this.get('sortDirection'))) {
-        filter['sortdir'] = this.get('sortDirection');
-      }
-      return filter;
-    }
-  ),
-
   ordersFilterChanged: observer(
-    'locationId',
+    'pickupLocationId',
     'statusGroupLabel',
     'searchTermsDebounced',
     'orderTypeId',
     'deliverySourceLabel',
+    'deliveryMethodLabel',
     'isArchivedOptionValue',
     'toBeInvoiced',
     'userId',
@@ -186,11 +163,9 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   actions: {
     resetFilters() {
       [
-        'locationId',
-        'statusGroupLabel',
         'orderTypeId',
         'deliverySourceLabel',
-        'isArchivedOptionValue',
+        'deliveryMethodLabel',
         'toBeInvoiced',
         'userId',
         'searchTermsDebounced',
@@ -198,6 +173,10 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       ].forEach((filterKey) => {
         this.set(filterKey, null);
       });
+      this.set('isArchivedOptionValue', 'false');
+      this.set('statusGroupLabel', 'all');
+      this.set('managingGroupId', this.get('defaultManagingGroupId'));
+      this.set('pickupLocationId', this.get('defaultPickupLocationId'));
     },
 
     setToBeInvoiced(value) {
@@ -206,7 +185,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
     setMyOrders(value) {
       this.set('userId', value
-        ? this.get('session.data.authenticated.userid')
+        ? this.get('sessionAccount.userid')
         : null
       );
     },

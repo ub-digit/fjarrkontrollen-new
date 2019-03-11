@@ -16,9 +16,11 @@ export default Ember.Route.extend(ResetScroll, {
   setupController(controller, model) {
     let optionModels = this.modelFor('admin');
     [
-      'locations',
+      'managingGroups',
+      'pickupLocations',
       'statuses',
       'deliverySources',
+      'deliveryMethods',
       'orderTypes',
       'emailTemplates',
       'users'

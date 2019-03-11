@@ -71,29 +71,58 @@
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <h5>Handläggande enhet</h5>
+        <h5>Handläggningsgrupp</h5>
 
         {{#if isEditing}}
           {{#form.element
             controlType="power-select"
-            options=locations
-            value=(find-by "id" changeset.locationId locations)
-            onChange=(action (mut changeset.locationId) value="id")
+            options=managingGroups
+            value=(find-by "id" changeset.managingGroupId managingGroups)
+            onChange=(action (mut changeset.managingGroupId) value="id")
+          as |el|
+          }}
+            {{#el.control
+              searchField="name"
+              searchEnabled=true
+              searchPlaceholder="Type your name"
+            as |pickupLocation|
+            }}
+              {{pickupLocation.name}}
+            {{/el.control}}
+          {{/form.element}}
+        {{else}}
+          <p>
+            {{#if changeset.managingGroupId}}
+              {{get (find-by "id" changeset.managingGroupId managingGroups) "name"}}
+            {{else}}
+              Ej angivet
+            {{/if}}
+          </p>
+        {{/if}}
+
+        <h5>Avhämtningsbibliotek</h5>
+
+        {{#if isEditing}}
+          {{#form.element
+            controlType="power-select"
+            options=pickupLocations
+            value=(find-by "id" changeset.pickupLocationId pickupLocations)
+            onChange=(action (mut changeset.pickupLocationId) value="id")
           as |el|
           }}
             {{#el.control
               searchField="nameSv"
               searchEnabled=true
               searchPlaceholder="Type your name"
-            as |location|
+            as |pickupLocation|
             }}
-              {{location.nameSv}}
+              {{pickupLocation.nameSv}}
             {{/el.control}}
           {{/form.element}}
         {{else}}
           <p>
-            {{#if changeset.locationId}}
-              {{get (find-by "id" changeset.locationId locations) "nameSv"}}
+            {{#if changeset.pickupLocationId}}
+              {{get (find-by "id" changeset.pickupLocationId pickupLocations) "nameSv"}}
             {{else}}
               Ej angivet
             {{/if}}
@@ -106,8 +135,8 @@
             controlType="power-select"
             options=statusOptions
             placeholder="Välj status"
-            value=(find-by "value" changeset.statusid statusOptions)
-            onChange=(action (mut changeset.statusid) value="value")
+            value=(find-by "value" changeset.statusId statusOptions)
+            onChange=(action (mut changeset.statusId) value="value")
           as |el|
           }}
             {{#el.control
@@ -121,8 +150,8 @@
           {{/form.element}}
         {{else}}
           <p>
-            {{#if changeset.statusid}}
-              {{get (find-by "value" changeset.statusid statusOptions) "label"}}
+            {{#if changeset.statusId}}
+              {{get (find-by "value" changeset.statusId statusOptions) "label"}}
             {{else}}
                 Ej angivet
             {{/if}}
@@ -234,8 +263,8 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris LF Number">
-              <th>Libris LF Number</th>
+            <tr titel="Libris LF number">
+              <th>Libris LF number</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -247,21 +276,27 @@
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris Request Id">
-              <th>Libris Request Id</th>
+            <tr titel="Libris request id">
+              <th>Libris request id</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
                   controlType="text"
                   property="librisRequestId"
                 }}
-                {{else}}
-                  {{changeset.librisRequestId}}
+                {{else if changeset.librisRequestId}}
+                  <a
+                    target="_blank"
+                    href="{{librisUrl}}"
+                  >
+                    {{changeset.librisRequestId}}
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
                 {{/if}}
               </td>
             </tr>
-            <tr titel="Libris Id">
-              <th>Libris Id</th>
+            <tr titel="Libris id">
+              <th>Libris id</th>
               <td>
                 {{#if isEditing}}
                 {{form.element
@@ -433,17 +468,28 @@
                 {{/if}}
               </td>
             </tr>
-
-            <tr titel="Leveransalternativ">
-              <th>Leveransalternativ</th>
+            <tr titel="Leveransmetod">
+              <th>Leveransmetod</th>
               <td>
                 {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="deliveryPlace"
-                }}
+                  {{#form.element
+                    controlType="power-select"
+                    options=deliveryMethods
+                    value=(find-by "id" changeset.deliveryMethodId deliveryMethods)
+                    onChange=(action (mut changeset.deliveryMethodId) value="id")
+                  as |el|
+                  }}
+                    {{#el.control
+                      searchField="name"
+                      searchEnabled=true
+                      searchPlaceholder="Type your name"
+                    as |deliveryMethod|
+                    }}
+                      {{deliveryMethod.name}}
+                    {{/el.control}}
+                  {{/form.element}}
                 {{else}}
-                  {{changeset.deliveryPlace}}
+                  {{get (find-by "id" changeset.deliveryMethodId deliveryMethods) 'name'}}
                 {{/if}}
               </td>
             </tr>
@@ -495,7 +541,7 @@
         </table>
       </div>
       <div class="col-12 col-md-6">
-        <h4>Lantagare</h4>
+        <h4>Låntagare</h4>
         <table class="table table-striped {{if isEditing " table-sm"}}">
           <tbody>
             <tr titel="Namn">
