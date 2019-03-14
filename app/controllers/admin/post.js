@@ -80,6 +80,10 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
        + "&layout=delivery_note";
   }),
 
+  kohaSearchUrl: computed('order.orderNumber', function() {
+    return ENV.APP.kohaSearchURL + this.get('order.orderNumber');
+  }),
+
   messageLanguageOption: computed('messageLanguage', function() {
     return this.get('messageLanguageOptions').findBy('language', this.get('messageLanguage'));
   }),
