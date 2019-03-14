@@ -47,7 +47,7 @@ as |form|
       </div>
       <div class="col-6 col-sm-3 col-lg-2">
         {{#form.element
-          label="Statusgrupp"
+          label="Status"
           controlType="power-select"
           options=statusGroups
           value=(find-by "label" statusGroupLabel statusGroups)
@@ -64,35 +64,7 @@ as |form|
           {{/el.control}}
         {{/form.element}}
       </div>
-      <div class="col-6 col-sm-3 col-lg-2">
-        {{form.element
-          label="Sök i fritext"
-          controlType="text"
-          value=searchTerms
-          onChange=(action "setSearchTerms")
-        }}
-      </div>
-
-      <div class="col-6 col-sm-3 col-lg-2">
-        {{#form.element
-          label="Beställningstyp"
-          controlType="power-select"
-          options=orderTypeOptions
-          value=(find-by "value" orderTypeId orderTypeOptions)
-          onChange=(action (mut orderTypeId) value="value")
-        as |el|
-        }}
-          {{#el.control
-            searchField="label"
-            searchEnabled=true
-            searchPlaceholder="Type your name"
-          as |option|
-          }}
-            {{option.label}}
-          {{/el.control}}
-        {{/form.element}}
-      </div>
-      <div class="col-12 col-lg-2 d-flex align-items-end mb-lg-2">
+      <div class="col-6 col-sm-2 col-lg-2 d-flex align-items-end mb-sm-2 mb-lg-2">
         {{form.element
           label="Mina ordrar"
           class="form-group"
@@ -101,9 +73,18 @@ as |form|
           onChange=(action "setMyOrders")
         }}
       </div>
-      {{#liquid-if filtersExpanded class="col-12"}}
+      <div class="col-6 col-sm-3 col-lg-4">
+        {{form.element
+          label="Sök i fritext"
+          controlType="text"
+          value=searchTerms
+          onChange=(action "setSearchTerms")
+        }}
+      </div>
+
+      {{#liquid-if filtersExpanded class="col-12 border-top"}}
         <div class="row">
-          <div class="col-6 col-lg-2">
+          <div class="col-6 col-sm-3 col-lg-2">
             {{#form.element
               label="Leveransställe"
               controlType="power-select"
@@ -122,7 +103,7 @@ as |form|
               {{/el.control}}
             {{/form.element}}
           </div>
-          <div class="col-6 col-lg-2">
+          <div class="col-6 col-sm-3 col-lg-2">
             {{#form.element
               label="Leveransmetod"
               controlType="power-select"
@@ -141,9 +122,28 @@ as |form|
               {{/el.control}}
             {{/form.element}}
           </div>
-          <div class="col-6 col-lg-2">
+          <div class="col-6 col-sm-3 col-lg-2">
             {{#form.element
-              label="Arkiverade & Aktiva"
+              label="Beställningstyp"
+              controlType="power-select"
+              options=orderTypeOptions
+              value=(find-by "value" orderTypeId orderTypeOptions)
+              onChange=(action (mut orderTypeId) value="value")
+            as |el|
+            }}
+              {{#el.control
+                searchField="label"
+                searchEnabled=true
+                searchPlaceholder="Type your name"
+              as |option|
+              }}
+                {{option.label}}
+              {{/el.control}}
+            {{/form.element}}
+          </div>
+          <div class="col-6 col-sm-3 col-lg-2">
+            {{#form.element
+              label="Arkiverade/aktiva"
               controlType="power-select"
               options=isArchivedOptions
               value=(find-by "value" isArchivedOptionValue isArchivedOptions)
@@ -158,7 +158,7 @@ as |form|
               {{/el.control}}
             {{/form.element}}
           </div>
-          <div class="col-12 col-lg-8 d-flex align-items-end  mb-lg-2">
+          <div class="col-6 col-lg-2 d-flex align-items-end mb-lg-2">
             {{form.element
               label="Skall faktureras"
               class="form-group"
