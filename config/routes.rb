@@ -66,5 +66,6 @@ Illbackend::Application.routes.draw do
   get "delivery_methods/:id" => "delivery_methods#show", :constraints  => { :id => /[0-9]+/ }
 
   get "statistics/" => "statistics#index"
-
+  
+  mount_ember_app :frontend, to: "/"
 end

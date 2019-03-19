@@ -8,6 +8,8 @@ gem 'rails', '4.2.7'
 
 gem 'rack-cors'
 
+gem 'ember-cli-rails', '~> 0.8.5'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 gem 'pg', '~> 0.15'
