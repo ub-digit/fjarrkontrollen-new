@@ -36,3 +36,29 @@ public/libris*.html
 tmp/testindicator.file
 backend_server_name
 cronlog.txt
+
+
+
+
+# compiled output
+frontend/dist
+/frontend/tmp
+
+# dependencies
+/frontend/node_modules
+/frontend/bower_components
+
+# misc
+/frontend/.sass-cache
+/frontend/connect.lock
+/frontend/coverage/*
+/frontend/libpeerconnection.log
+
+npm-debug.log*
+yarn-error.log
+testem.log
+
+# ember-try
+.node_modules.ember-try/
+bower.json.ember-try
+package.json.ember-try
