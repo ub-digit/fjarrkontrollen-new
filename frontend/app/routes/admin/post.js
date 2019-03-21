@@ -23,7 +23,8 @@ export default Ember.Route.extend(ResetScroll, {
       'deliveryMethods',
       'orderTypes',
       'emailTemplates',
-      'users'
+      'users',
+      'configs'
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });

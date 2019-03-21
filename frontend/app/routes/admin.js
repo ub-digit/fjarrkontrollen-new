@@ -15,10 +15,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       deliverySources: this.store.findAll('delivery-source'),
       deliveryMethods: this.store.findAll('delivery-method'),
       users: this.store.findAll('user'),
-
       //Used by order page only
       emailTemplates: this.store.findAll('email-template'),
       statuses: this.store.findAll('status'),
+      configs: this.store.findAll('config')
     });
   },
 

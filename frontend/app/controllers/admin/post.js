@@ -60,7 +60,8 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   lastOrderViewed: null,
 
   librisUrl: computed('order.librisRequestId', function() {
-    return ENV.APP.librisFjarrlanURL + this.get('order.librisRequestId');
+    let librisillRequestUrl = this.get('configs').findBy('id', '1').get('data.librisillRequestUrl');
+    return librisillRequestUrl + this.get('order.librisRequestId');
   }),
 
   printOrderUrl: computed('order.id', function() {
@@ -80,8 +81,9 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
        + "&layout=delivery_note";
   }),
 
-  kohaSearchUrl: computed('order.orderNumber', function() {
-    return ENV.APP.kohaSearchURL + this.get('order.orderNumber');
+  kohaSearchUrl: computed('order.orderNumber', 'configs', function() {
+    let kohaSearchURL = this.get('configs').findBy('id', '1').get('data.kohaSearchUrl');
+    return kohaSearchURL + this.get('order.orderNumber');
   }),
 
   messageLanguageOption: computed('messageLanguage', function() {

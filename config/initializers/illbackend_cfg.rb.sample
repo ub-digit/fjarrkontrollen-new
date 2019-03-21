@@ -13,7 +13,8 @@ Illbackend::Application.config.email_settings = {
 # Usage:
 # Illbackend::Application.config.librisill_settings[:base_url]
 Illbackend::Application.config.librisill_settings = {
-  :base_url => "<Libris fjärrlån API endpoint>"
+  :base_url => "<Libris fjärrlån API endpoint>",
+  :request_url => "<Libris fjärrlån request link>"
 }
 
 # Usage:
@@ -28,6 +29,7 @@ Illbackend::Application.config.pagination = {
 }
 
 Illbackend::Application.config.koha = {
+  :search_url => '<enter search url>',
   :write => true,
   :userid => '<enter api user id>',
   :password => '<enter api password>',
