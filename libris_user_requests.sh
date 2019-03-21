@@ -1,7 +1,7 @@
 #!/bin/bash
 # libris_user_requests.sh
 # Låntagarbeställningar från Libris Fjärrlån
-# is run by cronjob fjarrkontrollen_server_ENV_cron_script
+# is run by cronjob fjarrkontrollen_ENV_cron_script
 PATH=$PATH:/usr/local/bin
 . /usr/local/rvm/scripts/rvm
 
