@@ -26,6 +26,8 @@ server deploy_config['host'], port: deploy_config['port'], user: deploy_config['
 
 set :deploy_to, deploy_config['path']
 
+set :branch, ENV['branch'] || 'master'
+
 set :default_env, {
     "PATH" => deploy_config['nvm_path'] + ":$PATH"
 }
