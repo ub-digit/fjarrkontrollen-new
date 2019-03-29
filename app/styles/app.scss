@@ -47,6 +47,13 @@
 
 html {
   font-size: 14px;
+  overflow-y:scroll
+}
+
+.pagination {
+  .page-item {
+    cursor: pointer;
+  }
 }
 
 .orders-filters-form {
