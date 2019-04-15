@@ -1,12 +1,18 @@
 {{#bs-dropdown as |dd|}}
-  {{#dd.button class="btn-sm"}}
+    
     {{#if assignedUsername}}
-      {{assignedUsername}}
+      {{#dd.button type="primary" class="btn-sm"}}
+        {{assignedUsername}}
+        <span class="caret"></span>
+      {{/dd.button}}
     {{else}}
-      Ingen
+      {{#dd.button class="btn-sm"}}
+        Ingen
+        <span class="caret"></span>
+      {{/dd.button}}
     {{/if}}
     <span class="caret"></span>
-  {{/dd.button}}
+
   {{#dd.menu as |ddm|}}
     {{#unless assignedUserIsLoggedInUser}}
       {{#ddm.item}}
@@ -26,7 +32,7 @@
           href="javascript:void(0)"
           {{action (perform setOrderAssignedUser orderId null)}}
         >
-          Slapp order
+          Släpp order
         </a>
       {{/ddm.item}}
     {{/if}}
