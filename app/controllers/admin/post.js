@@ -157,7 +157,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         {
           key: 'orderNumber',
           en: 'Ordernumber',
-          sv: 'Ordernummber'
+          sv: 'Ordernummer'
         }, {
           key: 'name',
           en: 'Patron',
