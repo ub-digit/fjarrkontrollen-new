@@ -664,12 +664,24 @@
               <th>Kundtyp</th>
               <td>
                 {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="customerType"
-                }}
+                  {{#form.element
+                    controlType="power-select"
+                    options=customerTypes
+                    value=(find-by "id" changeset.customerTypeId customerTypes)
+                    onChange=(action (mut changeset.customerTypeId) value="id")
+                  as |el|
+                  }}
+                    {{#el.control
+                      searchField="nameSv"
+                      searchEnabled=true
+                      searchPlaceholder="Type your name"
+                    as |customerType|
+                    }}
+                      {{customerType.nameSv}}
+                    {{/el.control}}
+                  {{/form.element}}
                 {{else}}
-                  {{changeset.customerType}}
+                  {{get (find-by "id" changeset.customerTypeId customerTypes) 'nameSv'}}
                 {{/if}}
               </td>
             </tr>
