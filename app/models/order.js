@@ -33,7 +33,7 @@ export default DS.Model.extend({
   phoneNumber: DS.attr('string'),
   libraryCardNumber: DS.attr('string'),
   xAccount: DS.attr('string'),
-  customerType: DS.attr('string'),
+  customerTypeId: DS.attr('string'),
   comments: DS.attr('string'),
   formLang: DS.attr('string'),
   authors: DS.attr('string'),
