@@ -29,18 +29,18 @@ export default Ember.Controller.extend({
       this.get('session').invalidate();
     },
 
-    scan(barcode) {
-      return this.findOrderPromise(barcode).then((order) => {
+    scan(changeset) {
+      return this.findOrderPromise(changeset.get('barcode')).then((order) => {
         this.set('isShowingScanModal', false);
         this.transitionToRoute('admin.post', order.get('id'));
       });
     },
 
-    scanDelivered(barcode) {
-      return this.findOrderPromise(barcode).then((order) => {
-        return order.setDelivered().then((response) => {
+    scanDelivered(changeset) {
+      return this.findOrderPromise(changeset.get('barcode')).then((order) => {
+        return order.setDelivered().then(() => {
           this.get('toast').success(
-            `Order status ändrad till levererad för order <b>${barcode}</b>.`,
+            `Order status ändrad till levererad för order <b>${changeset.get('barcode')}</b>.`,
             'Status ändrad'
           );
         });

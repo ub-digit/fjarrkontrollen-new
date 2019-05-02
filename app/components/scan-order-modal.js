@@ -18,7 +18,7 @@ export default Ember.Component.extend({
     },
     onSubmit(changeset) {
       // validate, or skip since cannot submit without isValid?
-      return this.get('onSubmit')(changeset.get('barcode'))
+      return this.get('onSubmit')(changeset)
       .catch((error) => {
         if (typeof error === 'string') {
           changeset.pushErrors('barcode', error);

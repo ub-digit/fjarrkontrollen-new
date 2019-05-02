@@ -167,7 +167,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
           en: 'Title',
           sv: 'Titel'
         }, {
-          key: 'author',
+          key: 'authors',
           en: 'Author',
           sv: 'Författare'
         }, {
