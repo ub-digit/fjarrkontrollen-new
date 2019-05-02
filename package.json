@@ -20,6 +20,7 @@
     "bootstrap": "^4.1.3",
     "broccoli-asset-rev": "^3.0.0",
     "ember-ajax": "^4.0.2",
+    "ember-api-actions": "^0.2.8",
     "ember-bootstrap": "^2.5.0",
     "ember-bootstrap-changeset-validations": "^1.0.0",
     "ember-bootstrap-power-select": "^1.0.0",

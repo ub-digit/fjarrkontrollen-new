@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import { memberAction } from 'ember-api-actions';
 
 export default DS.Model.extend({
   isArchived: DS.attr('boolean'),
@@ -67,5 +68,9 @@ export default DS.Model.extend({
   price: DS.attr('number'),
   toBeInvoiced: DS.attr('boolean'),
   publicationType: DS.attr('string'),
-  period: DS.attr('string')
-});
+  period: DS.attr('string'),
+
+  /* Actions: */
+
+  setDelivered: memberAction({ path: 'set_delivered' })
+})
