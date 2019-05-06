@@ -321,6 +321,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       this.set(property, value);
       changeset.set('subject', this.get('emailTemplateSubject'));
       changeset.set('message', this.get('emailTemplateBody'));
+      changeset.set('emailTemplateLabel', this.get('emailTemplate.label'));
     },
 
     onAddBiblioInfoChange(changeset, addBiblioInfo) {
