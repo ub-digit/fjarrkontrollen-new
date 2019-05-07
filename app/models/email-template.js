@@ -5,5 +5,6 @@ export default DS.Model.extend({
   subjectSv: DS.attr('string'),
   subjectEn: DS.attr('string'),
   bodySv: DS.attr('string'),
-  bodyEn: DS.attr('string')
+  bodyEn: DS.attr('string'),
+  disabled: DS.attr('boolean')
 });
