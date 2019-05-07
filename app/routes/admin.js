@@ -5,7 +5,6 @@ import RSVP from 'rsvp';
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   authenticationRoute: 'login',
 
-  //status group vs statuses differance?
   model() {
     return RSVP.hash({
       managingGroups: this.store.findAll('managing-group'),
@@ -25,7 +24,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   setupController(controller, model) {
     [
-      'statuses'
+      'managingGroups', 'pickupLocations', 'statuses'
     ].forEach(function (property) {
       controller.set(property, model[property]);
     });

@@ -16,7 +16,7 @@
       {{/nav.item}}
     {{/navbar.nav}}
 
-    {{#bs-button type="link"}}{{session.data.authenticated.name}}{{/bs-button}}
+     <span class="p-2 user-name">{{session.data.authenticated.name}}{{affiliation}}</span>
 
     {{#bs-button type="link" onClick=(action "logout")}}Logga ut{{/bs-button}}
   {{/navbar.content}}

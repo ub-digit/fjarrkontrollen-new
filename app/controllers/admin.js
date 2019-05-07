@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { isArray } from '@ember/array';
 
@@ -8,6 +9,21 @@ export default Ember.Controller.extend({
 
   isShowingScanModal: false,
   isShowingSetDeliveredScanModal: false,
+
+  affiliation: computed('session', function() {
+    let userInfo = this.get('session.data.authenticated');
+    if (userInfo.userManagingGroupId) {
+      return " | Handläggningsgrupp: " + this.get('managingGroups').findBy('id', userInfo.userManagingGroupId.toString()).name;
+    }
+    else {
+      if (userInfo.userPickupLocationId) {
+        return " | Avhämtningsbibliotek: " + this.get('pickupLocations').findBy('id', userInfo.userPickupLocationId.toString()).nameSv;
+      }
+      else {
+        return "";
+      }
+    }
+  }),
 
   findOrderPromise(barcode) {
     return this.store.findRecord('order', barcode).catch((error) => {
