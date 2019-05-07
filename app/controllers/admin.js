@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
   affiliation: computed('session', function() {
     let userInfo = this.get('session.data.authenticated');
     if (userInfo.userManagingGroupId) {
-      return " | Handlänggningsgrupp: " + this.get('managingGroups').findBy('id', userInfo.userManagingGroupId.toString()).name;
+      return " | Handläggningsgrupp: " + this.get('managingGroups').findBy('id', userInfo.userManagingGroupId.toString()).name;
     }
     else {
       if (userInfo.userPickupLocationId) {
