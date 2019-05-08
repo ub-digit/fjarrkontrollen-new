@@ -88,8 +88,12 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     return this.get('messageLanguageOptions').findBy('language', this.get('messageLanguage'));
   }),
 
+  emailTemplateOptions: computed('emailTemplates', function() {
+    return this.get('emailTemplates').rejectBy('disabled');
+  }),
+
   emailTemplate: computed('emailTemplateId', function() {
-    return this.get('emailTemplates').findBy('id', this.get('emailTemplateId'));
+    return this.get('emailTemplateOptions').findBy('id', this.get('emailTemplateId'));
   }),
 
   emailTemplateSubject: computed('messageLanguageOption', 'emailTemplate', function() {
