@@ -11,8 +11,6 @@ import { A } from '@ember/array';
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   sessionAccount: inject(),
 
-  setDefaultFiltersValues: true, //hack
-
   powerSelectOverlayedOptions: [{
     source: 'managingGroups',
     target: 'managingGroupOptions',
@@ -70,15 +68,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   },
 
   filtersExpanded: null,
-
-  defaultPickupLocationId: computed('sessionAccount.userPickupLocationId', function() {
-    return this.get('sessionAccount.userPickupLocationId') ? this.get('sessionAccount.userPickupLocationId').toString() : null;
-  }),
-
-  defaultManagingGroupId: computed('sessionAccount.userManagingGroupId', function() {
-    return this.get('sessionAccount.userManagingGroupId') ? this.get('sessionAccount.userManagingGroupId').toString() : null;
-  }),
-
 
   /* Filters */
   managingGroupId: null,
@@ -175,8 +164,8 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       });
       this.set('isArchivedOptionValue', 'false');
       this.set('statusGroupLabel', 'all');
-      this.set('managingGroupId', this.get('defaultManagingGroupId'));
-      this.set('pickupLocationId', this.get('defaultPickupLocationId'));
+      this.set('managingGroupId', this.get('sessionAccount.defaultManagingGroupId'));
+      this.set('pickupLocationId', this.get('sessionAccount.defaultPickupLocationId'));
     },
 
     setToBeInvoiced(value) {
