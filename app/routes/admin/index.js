@@ -1,7 +1,11 @@
 import Ember from 'ember';
+import { inject } from '@ember/service';
 import { isEmpty, isBlank } from '@ember/utils';
+import { computed } from '@ember/object';
 
 export default Ember.Route.extend({
+  sessionAccount: inject(),
+
   queryParams: {
     managingGroupId: {
       refreshModel: true
@@ -44,8 +48,22 @@ export default Ember.Route.extend({
     },
   },
 
+  defaultFiltersValuesSet: false, //hack
+  setDefaultFiltersValues: computed('sessionAccount.authenticatedOrRestored', 'defaultFiltersValuesSet', function() {
+    return (
+      this.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
+      !this.get('defaultFiltersValuesSet')
+    );
+  }),
+
   model(params) {
     let filter = {};
+
+    if (this.get('setDefaultFiltersValues')) {
+      params.managingGroupId = this.get('sessionAccount.defaultManagingGroupId');
+      params.pickupLocationId = this.get('sessionAccount.defaultPickupLocationId');
+    }
+
     //TODO: Replace with mappings hash
     if (!isEmpty(params.managingGroupId)) {
       filter['current_managing_group'] = params.managingGroupId;
@@ -104,13 +122,10 @@ export default Ember.Route.extend({
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });
-    if (
-        controller.get('sessionAccount.authenticatedOrRestored') == 'authenticated' &&
-        controller.get('setDefaultFiltersValues')
-    ) {
-      controller.set('managingGroupId', controller.get('defaultManagingGroupId'));
-      controller.set('pickupLocationId', controller.get('defaultPickupLocationId'));
-      controller.set('setDefaultFiltersValues', false);
+    if (this.get('setDefaultFiltersValues')) {
+      controller.set('managingGroupId', this.get('sessionAccount.defaultManagingGroupId'));
+      controller.set('pickupLocationId', this.get('sessionAccount.defaultPickupLocationId'));
+      this.set('defaultFiltersValuesSet', true);
     }
   }
 });
