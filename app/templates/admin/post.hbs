@@ -1040,6 +1040,26 @@
                   av {{get (find-by "id" note.userId users) "xkonto"}}
                 </h6>
                 {{#bs-button
+                  title="Ta bort notering."
+                  type="link"
+                  class="font-size-sm"
+                  onClick=(action "removeNote" note.id)
+                }}
+                  <small>
+                    <i class="fas fa-trash-alt messages-card-remove-icon"></i>
+                  </small>
+                {{/bs-button}}
+                {{#bs-button
+                  title="Ändra notering."
+                  type="link"
+                  class="font-size-sm"
+                  onClick=(action "showCreateNote" note)
+                }}
+                  <small>
+                    <i class="fas fa-edit messages-card-edit-icon"></i>
+                  </small>
+                {{/bs-button}}
+                {{#bs-button
                   title="Sätter denna notering som sticky. Detta gör att den blir tillgänglig i översiktslistan."
                   type="link"
                   class="font-size-sm"

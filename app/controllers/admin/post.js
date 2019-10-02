@@ -274,18 +274,38 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       }));
     },
     /** Note **/
-    showCreateNote() {
-      this.set('note',
-        this.store.createRecord(
-          'note',
-          { isEmail: false, userId: this.get('userId'), orderId: this.get('order.id') }
-        )
-      );
+    showCreateNote(note) {
+      if (note) {
+        this.set('note', note);
+      }
+      else {
+        this.set('note',
+          this.store.createRecord(
+            'note',
+            { isEmail: false, userId: this.get('userId'), orderId: this.get('order.id') }
+          )
+        );
+      }
       this.set('isCreatingNote', true);
     },
     cancelCreateNote() {
       this.set('isCreatingNote', false);
     },
+
+    removeNote(id) {
+      if (confirm('Är du säker på att du vill ta bort denna notering?')) {
+        this.store.findRecord('note', id, { backgroundReload: false }).then(function(post) {
+          post.destroyRecord(); 
+        });
+      }
+    },
+
+  
+    editNote() {
+      alert("Edit Note");
+    },
+
+
     saveNote(changeset) {
       return new RSVP.Promise((resolve, reject) => {
         changeset.save().then(() => {

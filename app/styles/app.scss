@@ -171,6 +171,9 @@ html {
         color: $green;
       }
     }
+    button.btn-link {
+      margin-left: 5px;
+    }
     button.btn-link:hover {
       background-color: $gray-200;
       border-color: $gray-400;
