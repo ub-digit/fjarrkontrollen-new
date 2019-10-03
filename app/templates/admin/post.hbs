@@ -1044,11 +1044,12 @@
                   {{/if}}
                   {{moment-format note.createdAt "DD-MM-YYYY HH:mm"}} av {{get (find-by "id" note.userId users) "xkonto"}}
                 </h6>
+                {{#if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "user")}}
                 {{#bs-button
                   title="Ta bort notering."
                   type="link"
                   class="font-size-sm"
-                  onClick=(action "removeNote" note.id)
+                  onClick=(action "deleteNote" note.id)
                 }}
                   <small>
                     <i class="fas fa-trash-alt messages-card-remove-icon"></i>
@@ -1064,6 +1065,7 @@
                     <i class="fas fa-edit messages-card-edit-icon"></i>
                   </small>
                 {{/bs-button}}
+                {{/if}}
                 {{#bs-button
                   title="Sätter denna notering som sticky. Detta gör att den blir tillgänglig i översiktslistan."
                   type="link"

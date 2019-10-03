@@ -15,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       deliveryMethods: this.store.findAll('delivery-method'),
       customerTypes: this.store.findAll('customer-type'),
       users: this.store.findAll('user'),
-      noteTypes: this.store.findAll('note-type'),
+     // noteTypes: this.store.findAll('note-type'),
 
       //Used by order page only
       emailTemplates: this.store.findAll('email-template'),

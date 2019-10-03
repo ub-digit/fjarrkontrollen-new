@@ -291,15 +291,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     cancelCreateNote() {
       this.set('isCreatingNote', false);
     },
-
-    removeNote(id) {
-      if (confirm('Är du säker på att du vill ta bort denna notering?')) {
-        this.store.findRecord('note', id, { backgroundReload: false }).then(function(post) {
-          post.destroyRecord(); 
-        });
-      }
-    },
-
   
     editNote() {
       alert("Edit Note");
@@ -366,9 +357,13 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     },
 
     deleteNote(noteId) {
-      this.store.findRecord('note', noteId, {reload: true}).then(function(post) {
-        post.destroyRecord();
-      });
+
+      if (confirm('Är du säker på att du vill ta bort denna notering?')) {
+        this.store.findRecord('note', noteId, {reload: true}).then(function(post) {
+          post.destroyRecord();
+        });
+      }
+
     },
 
     /** Sticky note **/
