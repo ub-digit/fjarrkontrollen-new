@@ -242,7 +242,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       this.set('message',
         this.store.createRecord(
           'note',
-          { isEmail: true, userId: this.get('userId'), orderId: this.get('order.id') }
+          { isEmail: true, noteTypeId: this.get('noteTypes').findBy('label', 'email').id, userId: this.get('userId'), orderId: this.get('order.id') }
         )
       );
       this.set('isCreatingMessage', true);
@@ -274,18 +274,24 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       }));
     },
     /** Note **/
-    showCreateNote() {
-      this.set('note',
-        this.store.createRecord(
-          'note',
-          { isEmail: false, userId: this.get('userId'), orderId: this.get('order.id') }
-        )
-      );
+    showCreateNote(note) {
+      if (note) {
+        this.set('note', note);
+      }
+      else {
+        this.set('note',
+          this.store.createRecord(
+            'note',
+            { isEmail: false, noteTypeId: this.get('noteTypes').findBy('label', 'user').id, userId: this.get('userId'), orderId: this.get('order.id') }
+          )
+        );
+      }
       this.set('isCreatingNote', true);
     },
     cancelCreateNote() {
       this.set('isCreatingNote', false);
     },
+
     saveNote(changeset) {
       return new RSVP.Promise((resolve, reject) => {
         changeset.save().then(() => {
@@ -343,6 +349,14 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         );
       }
       this.set('addBiblioInfo', addBiblioInfo);
+    },
+
+    deleteNote(noteId) {
+      if (confirm('Är du säker på att du vill ta bort denna notering?')) {
+        this.store.findRecord('note', noteId, {reload: true}).then(function(post) {
+          post.destroyRecord();
+        });
+      }
     },
 
     /** Sticky note **/

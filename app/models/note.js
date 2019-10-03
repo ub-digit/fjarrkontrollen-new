@@ -9,6 +9,7 @@ export default DS.Model.extend({
   subject: DS.attr('string'),
   message: DS.attr('string'),
   isEmail: DS.attr('boolean'),
+  noteTypeId: DS.attr('string'),
   createdAt: DS.attr('date'),
   updatedAt: DS.attr('date')
 });
