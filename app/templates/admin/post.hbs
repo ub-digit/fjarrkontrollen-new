@@ -1085,16 +1085,6 @@
               <p class="card-text">
                 {{note.message}}
               </p>
-              {{#if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "user")}}
-                {{#bs-button
-                  title="Raderar denna notering."
-                  type="link"
-                  class="close"
-                  onClick=(action "deleteNote" note.id)
-                }}
-                  <span aria-hidden="true">&times;</span>
-                {{/bs-button}}
-              {{/if}}
             </div>
           </div>
         {{/each}}
