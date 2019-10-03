@@ -1035,9 +1035,14 @@
             <div class="card-body">
               <div class="d-flex align-items-start">
                 <h6 class="flex-grow-1 card-title">
-                  <i class="far fa-file-alt messages-card-title-icon"></i>
-                  {{moment-format note.createdAt "DD-MM-YYYY HH:mm"}}
-                  av {{get (find-by "id" note.userId users) "xkonto"}}
+                  {{#if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "system")}}
+                    <i class="fas fa-cog"></i>
+                  {{else if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "user")}}
+                    <i class="far fa-file-alt messages-card-title-icon"></i>                
+                  {{else if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "email")}}
+                    <i class="far fa-envelope"></i>
+                  {{/if}}
+                  {{moment-format note.createdAt "DD-MM-YYYY HH:mm"}} av {{get (find-by "id" note.userId users) "xkonto"}}
                 </h6>
                 {{#bs-button
                   title="Sätter denna notering som sticky. Detta gör att den blir tillgänglig i översiktslistan."
@@ -1058,6 +1063,16 @@
               <p class="card-text">
                 {{note.message}}
               </p>
+              {{#if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "user")}}
+                {{#bs-button
+                  title="Raderar denna notering."
+                  type="link"
+                  class="close"
+                  onClick=(action "deleteNote" note.id)
+                }}
+                  <span aria-hidden="true">&times;</span>
+                {{/bs-button}}
+              {{/if}}
             </div>
           </div>
         {{/each}}
