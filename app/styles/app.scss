@@ -228,3 +228,11 @@ html {
 .user-switcher-spacer {
   height: map-get($spacers, 4) * 3;
 }
+
+
+.toast-title {
+  font-size: 16px;
+}
+.toast-message {
+  font-size: 16px
+}
