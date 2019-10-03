@@ -282,7 +282,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         this.set('note',
           this.store.createRecord(
             'note',
-            { isEmail: false, userId: this.get('userId'), orderId: this.get('order.id') }
+            { isEmail: false, noteTypeId: this.get('noteTypes').findBy('label', 'user').id, userId: this.get('userId'), orderId: this.get('order.id') }
           )
         );
       }
@@ -357,13 +357,11 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     },
 
     deleteNote(noteId) {
-
       if (confirm('Är du säker på att du vill ta bort denna notering?')) {
         this.store.findRecord('note', noteId, {reload: true}).then(function(post) {
           post.destroyRecord();
         });
       }
-
     },
 
     /** Sticky note **/
