@@ -234,10 +234,10 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     },
     /** Message **/
     showCreateMessage() {
-      console.log(this);
-      console.log(this.get('noteTypes'));
-      console.log(this.get('noteTypes').findBy('label', 'system').id);
       // Need to reset these since not part of changeset
+      this.set('messageLanguage', 'sv');
+      this.set('emailTemplateId', null);
+      this.set('addBiblioInfo', true);
 
       this.set('message',
         this.store.createRecord(
@@ -291,11 +291,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     cancelCreateNote() {
       this.set('isCreatingNote', false);
     },
-  
-    editNote() {
-      alert("Edit Note");
-    },
-
 
     saveNote(changeset) {
       return new RSVP.Promise((resolve, reject) => {
