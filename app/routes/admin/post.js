@@ -24,7 +24,8 @@ export default Ember.Route.extend(ResetScroll, {
       'orderTypes',
       'emailTemplates',
       'users',
-      'customerTypes'
+      'customerTypes',
+      'noteTypes'
     ].forEach(function (property) {
       controller.set(property, optionModels[property]);
     });
