@@ -59,6 +59,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
 
   lastOrderViewed: null,
 
+
   librisUrl: computed('order.librisRequestId', function() {
     return ENV.APP.librisFjarrlanURL + this.get('order.librisRequestId');
   }),
@@ -239,10 +240,15 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
       this.set('emailTemplateId', null);
       this.set('addBiblioInfo', true);
 
+      var bibInfo = '';
+      if (this.get("addBiblioInfo")) {
+        var bibInfo = this.get('biblioInfo');
+      }
+
       this.set('message',
         this.store.createRecord(
           'note',
-          { isEmail: true, noteTypeId: this.get('noteTypes').findBy('label', 'email').id, userId: this.get('userId'), orderId: this.get('order.id') }
+          { isEmail: true, noteTypeId: this.get('noteTypes').findBy('label', 'email').id, userId: this.get('userId'), orderId: this.get('order.id'), message: bibInfo }
         )
       );
       this.set('isCreatingMessage', true);
