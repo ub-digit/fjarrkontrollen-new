@@ -106,15 +106,19 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   emailTemplateBody: computed('messageLanguageOption', 'emailTemplate', 'addBiblioInfo', function() {
     let option = this.get('messageLanguageOption');
     let template = this.get('emailTemplate');
-
+    let emailTemplateBody = '';
     if (template) {
-      let emailTemplateBody = template.get(option['bodyProperty']);
+      emailTemplateBody = template.get(option['bodyProperty']);
       if (this.get('addBiblioInfo')) {
         emailTemplateBody += this.get('biblioInfo');
       }
       return emailTemplateBody;
     }
     else {
+      if (this.get('addBiblioInfo')) {
+        emailTemplateBody += this.get('biblioInfo');
+        return emailTemplateBody;
+      }
       return null;
     }
   }),
