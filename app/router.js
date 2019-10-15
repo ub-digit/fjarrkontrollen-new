@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('admin', { path: '' }, function() {
     this.route('post', { path: 'post/:id'});
     this.route('postscanned', { path: 'postscanned/:id' });
+    this.route('settings', { path: 'settings' });
   });
 });
 
