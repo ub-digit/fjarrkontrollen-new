@@ -1,0 +1,80 @@
+<h1>Hantera e-post mallar </h1>
+
+{{#bs-modal
+  open=isShowingEmailTemplateEditModal
+  onHide=(action (mut isShowingEmailTemplateEditModal) false)
+  onHidden=(action "resetState")
+    as |modal|
+}}
+  {{#modal.header}}
+    <h4 class="modal-title">Ändra e-post mall</h4>
+  {{/modal.header}}
+  	{{#with (changeset currentTemplate) as |changesetObj|}}
+	    {{#modal.body}}
+	      {{#bs-form
+	        model=changesetObj
+	        onSubmit=(action "onSubmit" changesetObj)
+	      as |form|
+	      }}
+	        {{form.element
+	          id="subjectSv"
+	          controlType="text"
+	          autofocus=true
+	          label="Titel (sv)"
+	          placeholder=""
+	          property="subjectSv"
+	        }}
+			{{form.element
+	          id="subjectEn"
+	          controlType="text"
+	          label="Titel (en)"
+	          placeholder=""
+	          property="subjectEn"
+	        }}
+	        {{yield form}}
+	      {{/bs-form}}
+	    {{/modal.body}}
+	    {{#modal.footer}}
+	      {{#bs-button onClick=(action modal.close) type="secondary"}}Avbryt{{/bs-button}}
+	      {{#bs-button
+	        onClick=(action modal.submit)
+	        type="success"
+	      }}Spara och stäng{{/bs-button}}
+	    {{/modal.footer}}
+    {{/with}}
+{{/bs-modal}}
+
+
+
+<table class="table table-striped table-responsive">
+	<thead class="thead-dark">
+			<th>ID</th>
+			<th>Rubrik (sv)</th>
+			<th>Rubrik (en)</th>
+			<th>Meddelande (sv)</th>
+			<th>Meddelande (en)</th>
+			<th>Inaktiverat</th>
+			<th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+	</thead>
+	<tbody>
+		{{#each this.model as |template|}}
+	    	<tr>
+	    		<td>{{template.id}}</td>
+	    		<td>{{template.subjectSv}}</td>
+	    		<td>{{template.subjectEn}}</td>
+	    		<td>{{template.bodySv}}</td>
+	    		<td>{{template.bodyEn}}</td>
+	    		<td>{{if template.disabled "Ja" "Nej"}}</td>
+	    		<td>
+		    		{{#bs-button  class="btn-sm" onClick=(action "deleteTemplate" template.id )}}
+	      				<i class="far fa-trash-alt"></i>
+	        		{{/bs-button}}
+
+		    		{{#bs-button class="btn-sm" onClick=(action  "toggleModal" template)}}
+	      				<i class="fas fa-edit"></i>
+	        		{{/bs-button}}
+	        	</td>
+	    	</tr>
+		{{/each}}
+	</tbody>
+</table>
