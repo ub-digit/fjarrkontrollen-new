@@ -60,10 +60,10 @@ export default Ember.Controller.extend({
 	      this.set('error', null);
 	    },
 	    onSubmit(changeset) {
+	    	let that = this;
 			return new RSVP.Promise((resolve, reject) => {
 				changeset.save().then(() => {
 					this.send('toggleModal');
-					this.send("refreshRoute");
 				}).catch((error) => {
 				  //TODO: format of error??? Probably an object, produce error and test
 				  this.set('messageErrors', error);

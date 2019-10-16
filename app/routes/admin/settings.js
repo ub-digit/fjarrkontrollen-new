@@ -7,7 +7,7 @@ export default Ember.Route.extend(ResetScroll, {
   session: inject('session'),
 
   model() {
-    return this.store.findAll('email_template');
+    return this.store.findAll('email_template', { reload: true });
   }, 
 
   setupController(controller) {
