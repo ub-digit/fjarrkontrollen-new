@@ -1,7 +1,5 @@
 import Ember from 'ember';
-import OrderValidations from '../../validations/order';
-import MessageValidations from '../../validations/message';
-import NoteValidations from '../../validations/note';
+import EmailTemplateValidations from '../../validations/email-template';
 import powerSelectOverlayedOptions from '../../mixins/power-select-overlayed-options'
 import { A } from '@ember/array';
 //import { observer } from '@ember/object';
@@ -16,6 +14,18 @@ import RSVP from 'rsvp';
 export default Ember.Controller.extend({
 	isShowingEmailTemplateEditModal: false,
 	currentTemplate: null,
+	EmailTemplateValidations,
+
+	generateGUID() {
+	    var dt = new Date().getTime();
+	    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	        var r = (dt + Math.random()*16)%16 | 0;
+	        dt = Math.floor(dt/16);
+	        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+	    });
+	    return uuid;
+	},
+
 	actions: {
 		toggleModal(template) {
 			if (this.get("isShowingEmailTemplateEditModal")) {
@@ -25,7 +35,11 @@ export default Ember.Controller.extend({
 				this.set("isShowingEmailTemplateEditModal", true);	
 				this.set("currentTemplate", template);
 			}
-			
+		},
+
+		createTemplate() {
+			let template = this.store.createRecord('email-template', {label: this.generateGUID()});
+			this.send("toggleModal", template);	
 		},
 
 	    deleteTemplate(templateId) {
@@ -49,6 +63,7 @@ export default Ember.Controller.extend({
 			return new RSVP.Promise((resolve, reject) => {
 				changeset.save().then(() => {
 					this.send('toggleModal');
+					this.send("refreshRoute");
 				}).catch((error) => {
 				  //TODO: format of error??? Probably an object, produce error and test
 				  this.set('messageErrors', error);

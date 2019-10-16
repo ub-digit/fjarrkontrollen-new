@@ -12,5 +12,11 @@ export default Ember.Route.extend(ResetScroll, {
 
   setupController(controller) {
    this._super(...arguments); // This sets model
-  }
+  },
+
+	actions: {
+		refreshRoute: function() {
+			this.refresh();
+		}
+	}
 });
