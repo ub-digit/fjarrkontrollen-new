@@ -12,6 +12,7 @@ import ENV from '../../config/environment';
 import RSVP from 'rsvp';
 
 export default Ember.Controller.extend({
+	toast: inject(),
 	isShowingEmailTemplateEditModal: false,
 	currentTemplate: null,
 	EmailTemplateValidations,
@@ -44,15 +45,10 @@ export default Ember.Controller.extend({
 
 	    deleteTemplate(templateId) {
 	      if (confirm('Är du säker på att du vill ta bort denna e-post mall?')) {
-	        this.store.findRecord('email_template', templateId, {reload: true}).then(function(template) {
-	          template.destroyRecord();
-	        });
-	      }
-	    },
-	    editTemplate(templateId) {
-	      if (confirm('Är du säker på att du vill editera denna e-post mall?')) {
-	        this.store.findRecord('email_template', templateId, {reload: true}).then(function(template) {
-	          template.destroyRecord();
+	        this.store.findRecord('email_template', templateId, {reload: true}).then((template) => {
+	          	template.destroyRecord().then(() => { 
+			        this.get('toast').success('E-post mallen togs bort.','Borttagen', {positionClass: 'toast-top-right', showDuration: '300', hideDuration: '1000', timeOut: '2000', extendedTimeOut: '2000'});
+			    });
 	        });
 	      }
 	    },
@@ -62,8 +58,14 @@ export default Ember.Controller.extend({
 	    onSubmit(changeset) {
 	    	let that = this;
 			return new RSVP.Promise((resolve, reject) => {
-				changeset.save().then(() => {
+				changeset.save().then((model) => {
 					this.send('toggleModal');
+					this.send('refreshRoute');
+					this.get('toast').success('E-post mallen uppdaterades.','Sparad', {positionClass: 'toast-top-right', showDuration: '300', hideDuration: '1000', timeOut: '2000', extendedTimeOut: '2000'});
+					Ember.run.later(this, function () {
+						$('tr').css("background-color", "transparent");	
+						$('#' + model.id ).css("background-color", "#c3e6cb");		
+				     }, 100);
 				}).catch((error) => {
 				  //TODO: format of error??? Probably an object, produce error and test
 				  this.set('messageErrors', error);
