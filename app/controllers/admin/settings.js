@@ -17,6 +17,12 @@ export default Ember.Controller.extend({
 	currentTemplate: null,
 	EmailTemplateValidations,
 
+
+	templates: computed('model.@each.position', function() {
+		return this.get("model").sortBy('position');
+	}),
+  
+
 	generateGUID() {
 	    var dt = new Date().getTime();
 	    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {

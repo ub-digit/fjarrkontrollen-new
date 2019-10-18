@@ -7,5 +7,5 @@ export default DS.Model.extend({
   bodySv: DS.attr('string'),
   bodyEn: DS.attr('string'),
   disabled: DS.attr('boolean'),
-  position: DS.attr('string')
+  position: DS.attr('number')
 });
