@@ -9,20 +9,34 @@ export default Ember.Controller.extend({
 
   isShowingScanModal: false,
   isShowingSetDeliveredScanModal: false,
+  loggedInUser: null,
 
-  affiliation: computed('session', function() {
-    let userInfo = this.get('session.data.authenticated');
-    if (userInfo.userManagingGroupId) {
-      return " | Handläggningsgrupp: " + this.get('managingGroups').findBy('id', userInfo.userManagingGroupId.toString()).name;
+  affiliation: computed('session', 'loggedInUser.{managingGroupId,pickupLocationId}', function() {
+    let currentUserId = this.get('session.data.authenticated.userid'); 
+    let currentUser = this.store.peekRecord('user', currentUserId);
+    if (currentUser.managingGroupId) {
+      return " | Handläggningsgrupp: " + this.get('managingGroups').findBy('id', currentUser.managingGroupId.toString()).name;
     }
     else {
-      if (userInfo.userPickupLocationId) {
-        return " | Avhämtningsbibliotek: " + this.get('pickupLocations').findBy('id', userInfo.userPickupLocationId.toString()).nameSv;
+      if (currentUser.pickupLocationId) {
+        return " | Avhämtningsbibliotek: " + this.get('pickupLocations').findBy('id', currentUser.pickupLocationId.toString()).nameSv;
       }
       else {
         return "";
       }
     }
+    this.set("loggedInUser", null);
+  }),
+
+  userList: computed(function() {
+    this.store.findAll('user');
+  }),
+
+  activeUserSirName: computed('loggedInUser.name', function() {
+    let currentUserId = this.get('session.data.authenticated.userid'); 
+    let currentUser = this.store.peekRecord('user', currentUserId);
+    this.set("loggedInUser", null);
+    return currentUser.name;
   }),
 
   findOrderPromise(barcode) {

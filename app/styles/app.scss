@@ -239,3 +239,11 @@ html {
 .toast-message {
   font-size: 16px
 }
+
+.user-details-form {
+  .user-details-form-footer {
+    .btn-success {
+      margin-left: map-get($spacers, 2);
+    }
+  }
+}

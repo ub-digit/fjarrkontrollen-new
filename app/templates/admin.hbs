@@ -16,7 +16,9 @@
       {{/nav.item}}
     {{/navbar.nav}}
 
-     <span class="p-2 user-name">{{session.data.authenticated.name}}{{affiliation}}</span>
+     <span class="p-2 user-name">{{activeUserSirName}}{{affiliation}}</span>
+     <span>{{#link-to "admin.user"}}<i class="far fa-edit" title="Ändra handläggningsgrupp & avhämntingsbibliotek"></i>{{/link-to}}</span>
+
 
     {{#bs-button type="link" onClick=(action "logout")}}Logga ut{{/bs-button}}
   {{/navbar.content}}

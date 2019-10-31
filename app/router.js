@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('post', { path: 'post/:id'});
     this.route('postscanned', { path: 'postscanned/:id' });
     this.route('settings', { path: 'settings' });
+    this.route('user', { path: 'user' });
   });
 });
 
