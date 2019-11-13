@@ -36,6 +36,7 @@
 			          label="Handläggningsgrupp"
 			          controlType="power-select"
 			          options=managingGroupOptions
+			          disabled=(if activeUser.pickupLocationId  true)
 			          value=(find-by "value" activeUser.managingGroupId managingGroupOptions)
 			          onChange=(action (mut activeUser.managingGroupId) value="value")
 			        as |el|
@@ -53,10 +54,12 @@
 			</div>
 			<div class="row">
 				<div class="col">
+					{{activeUser.managingGroupId}}
 			        {{#form.element
 			          label="Avhämtningsbibliotek"
 			          controlType="power-select"
 			          options=pickupLocationOptions
+			          disabled=(if activeUser.managingGroupId  true)
 			          value=(find-by "value" activeUser.pickupLocationId pickupLocationOptions)
 			          onChange=(action (mut activeUser.pickupLocationId) value="value")
 			        as |el|

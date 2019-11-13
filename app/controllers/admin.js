@@ -2,14 +2,32 @@ import Ember from 'ember';
 import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { isArray } from '@ember/array';
+import powerSelectOverlayedOptions from '../mixins/power-select-overlayed-options';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   session: inject(),
   toast: inject(),
 
   isShowingScanModal: false,
   isShowingSetDeliveredScanModal: false,
+  isShowingUserSettingModal:false,
   loggedInUser: null,
+
+
+
+  powerSelectOverlayedOptions: [{
+    source: 'managingGroups',
+    target: 'managingGroupOptions',
+    valueProperty: 'id',
+    labelProperty: 'name',
+    noneLabel: 'Inget valt'
+    }, {
+    source: 'pickupLocations',
+    target: 'pickupLocationOptions',
+    valueProperty: 'id',
+    labelProperty: 'nameSv',
+    noneLabel: 'Inget valt'
+  }],
 
   affiliation: computed('session', 'loggedInUser.{managingGroupId,pickupLocationId}', function() {
     let currentUserId = this.get('session.data.authenticated.userid'); 
@@ -25,17 +43,18 @@ export default Ember.Controller.extend({
         return "";
       }
     }
-    this.set("loggedInUser", null);
+    this.set("loggedInUser", currentUser);
   }),
 
   userList: computed(function() {
     this.store.findAll('user');
   }),
 
+
   activeUserSirName: computed('loggedInUser.name', function() {
     let currentUserId = this.get('session.data.authenticated.userid'); 
     let currentUser = this.store.peekRecord('user', currentUserId);
-    this.set("loggedInUser", null);
+    this.set("loggedInUser", currentUser);
     return currentUser.name;
   }),
 
@@ -54,16 +73,25 @@ export default Ember.Controller.extend({
     });
   },
 
+  findUserPromise() {
+
+  },
+
   actions: {
     logout() {
       this.get('session').invalidate();
     },
+
 
     scan(changeset) {
       return this.findOrderPromise(changeset.get('barcode')).then((order) => {
         this.set('isShowingScanModal', false);
         this.transitionToRoute('admin.post', order.get('id'));
       });
+    },
+
+    userSaved(changeset) {
+
     },
 
     scanDelivered(changeset) {
