@@ -73,10 +73,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     });
   },
 
-  findUserPromise() {
-
-  },
-
   actions: {
     logout() {
       this.get('session').invalidate();
@@ -88,10 +84,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
         this.set('isShowingScanModal', false);
         this.transitionToRoute('admin.post', order.get('id'));
       });
-    },
-
-    userSaved(changeset) {
-
     },
 
     scanDelivered(changeset) {
