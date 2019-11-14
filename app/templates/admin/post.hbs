@@ -214,6 +214,24 @@
             {{/if}}
           </p>
         {{/if}}
+        <h5>Ej aktuell efter</h5>
+        {{#if isEditing}}
+        {{form.element
+          controlType="text"
+          property="notValidAfter"
+        }}
+        {{else}}
+          <p>
+          {{if changeset.notValidAfter changeset.notValidAfter "Ej angivet"}}
+          </p>
+        {{/if}}
+        <h5>Utanför Norden</h5>
+        {{form.element
+          label="Utanför Norden"
+          controlType="checkbox"
+          disabled=(not isEditing)
+          value=changeset.orderOutsideScandinavia
+        }}
       </div>
       <div class="col-12 col-sm-6 col-md-3">
         <h5>Återlämningsdatum</h5>
@@ -253,6 +271,19 @@
         <h4>Orderkort</h4>
         <table class="table table-striped{{if isEditing " table-sm"}}">
           <tbody>
+            <tr titel="Kommentar">
+              <th>Kommentar</th>
+              <td>
+                {{#if isEditing}}
+                {{form.element
+                  controlType="text"
+                  property="deliveryComments"
+                }}
+                {{else}}
+                  {{changeset.deliveryComments}}
+                {{/if}}
+              </td>
+            </tr>
             <tr titel="Titel">
               <th>Titel</th>
               <td>
@@ -496,57 +527,26 @@
                 {{/if}}
               </td>
             </tr>
-
-            <tr titel="Utanför Norden">
-              <th>Utanför Norden</th>
-              <td>
-              {{form.element
-                label="Utanför Norden"
-                controlType="checkbox"
-                disabled=(not isEditing)
-                value=changeset.orderOutsideScandinavia
-              }}
-              </td>
-            </tr>
-
-            <tr titel="Ej aktuell efter">
-              <th>Ej aktuell efter</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="notValidAfter"
-                }}
-                {{else}}
-                  {{changeset.notValidAfter}}
-                {{/if}}
-
-              </td>
-            </tr>
-
-            <tr titel="Kommentar">
-              <th>Kommentar</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="comments"
-                }}
-                {{else}}
-                  {{changeset.comments}}
-                {{/if}}
-
-              </td>
-            </tr>
-
           </tbody>
-
         </table>
       </div>
       <div class="col-12 col-md-6">
         <h4>Låntagare</h4>
         <table class="table table-striped {{if isEditing " table-sm"}}">
           <tbody>
+            <tr titel="Lånekortsnummer">
+              <th>Lånekortsnummer</th>
+              <td>
+                {{#if isEditing}}
+                {{form.element
+                  controlType="text"
+                  property="libraryCardNumber"
+                }}
+                {{else}}
+                  {{changeset.libraryCardNumber}}
+                {{/if}}
+              </td>
+            </tr>
             <tr titel="Namn">
               <th>Namn</th>
               <td>
@@ -559,6 +559,48 @@
                   {{changeset.name}}
                 {{/if}}
 
+              </td>
+            </tr>
+
+            <tr titel="X-konto">
+              <th>X-konto</th>
+              <td>
+                {{#if isEditing}}
+                {{form.element
+                  controlType="text"
+                  property="xAccount"
+                }}
+                {{else}}
+                  {{changeset.xAccount}}
+                {{/if}}
+              </td>
+            </tr>
+
+            <tr titel="E-post">
+              <th>E-post</th>
+              <td>
+                {{#if isEditing}}
+                {{form.element
+                  controlType="text"
+                  property="emailAddress"
+                }}
+                {{else}}
+                  {{changeset.emailAddress}}
+                {{/if}}
+              </td>
+            </tr>
+
+            <tr titel="Språkval i formulär">
+              <th>Språkval i formulär</th>
+              <td>
+                {{#if isEditing}}
+                {{form.element
+                  controlType="text"
+                  property="formLang"
+                }}
+                {{else}}
+                  {{changeset.formLang}}
+                {{/if}}
               </td>
             </tr>
 
@@ -617,49 +659,6 @@
                 {{/if}}
               </td>
             </tr>
-
-            <tr titel="E-post">
-              <th>E-post</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="emailAddress"
-                }}
-                {{else}}
-                  {{changeset.emailAddress}}
-                {{/if}}
-              </td>
-            </tr>
-
-            <tr titel="Lånekortsnummer">
-              <th>Lånekortsnummer</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="libraryCardNumber"
-                }}
-                {{else}}
-                  {{changeset.libraryCardNumber}}
-                {{/if}}
-              </td>
-            </tr>
-
-            <tr titel="X-konto">
-              <th>X-konto</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="xAccount"
-                }}
-                {{else}}
-                  {{changeset.xAccount}}
-                {{/if}}
-              </td>
-            </tr>
-
             <tr titel="Kundtyp">
               <th>Kundtyp</th>
               <td>
@@ -682,20 +681,6 @@
                   {{/form.element}}
                 {{else}}
                   {{get (find-by "id" changeset.customerTypeId customerTypes) 'nameSv'}}
-                {{/if}}
-              </td>
-            </tr>
-
-            <tr titel="Språkval i formulär">
-              <th>Språkval i formulär</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="formLang"
-                }}
-                {{else}}
-                  {{changeset.formLang}}
                 {{/if}}
               </td>
             </tr>
@@ -755,20 +740,6 @@
                 }}
                 {{else}}
                   {{changeset.deliveryBox}}
-                {{/if}}
-              </td>
-            </tr>
-
-            <tr titel="Kommentar">
-              <th>Kommentar</th>
-              <td>
-                {{#if isEditing}}
-                {{form.element
-                  controlType="text"
-                  property="deliveryComments"
-                }}
-                {{else}}
-                  {{changeset.deliveryComments}}
                 {{/if}}
               </td>
             </tr>
