@@ -239,3 +239,25 @@ html {
 .toast-message {
   font-size: 16px
 }
+
+.user-details-form {
+  .user-details-form-footer {
+    .btn-success {
+      margin-left: map-get($spacers, 2);
+    }
+  }
+}
+
+.in-modal-dropdown {
+  z-index: 1900;
+}
+
+.inactive {
+  opacity: .5;
+} 
+
+
+.action-tools {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

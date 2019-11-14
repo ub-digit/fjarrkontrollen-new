@@ -16,7 +16,8 @@
       {{/nav.item}}
     {{/navbar.nav}}
 
-     <span class="p-2 user-name">{{session.data.authenticated.name}}{{affiliation}}</span>
+     <span class="p-2 user-name">{{activeUserSirName}}{{affiliation}}</span>
+     {{#bs-button type="link" onClick=(action (mut isShowingUserSettingModal) true)}}<i class="far fa-edit" title="Ändra handläggningsgrupp & avhämntingsbibliotek"></i>{{/bs-button}}
 
     {{#bs-button type="link" onClick=(action "logout")}}Logga ut{{/bs-button}}
   {{/navbar.content}}
@@ -32,5 +33,15 @@
     onSubmit=(action "scanDelivered")
     open=isShowingSetDeliveredScanModal
   }}
+
+  {{user-setting-modal
+    title="Inställningar"
+    managingGroups=managingGroupOptions
+    pickupLocations=pickupLocationOptions
+    loggedInUser=loggedInUser
+    onSubmit=(action "scanDelivered")
+    open=isShowingUserSettingModal
+  }}
+
   {{liquid-outlet}}
 </div>

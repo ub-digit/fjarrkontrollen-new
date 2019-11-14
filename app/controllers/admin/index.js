@@ -22,6 +22,7 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     target: 'pickupLocationOptions',
     valueProperty: 'id',
     labelProperty: 'nameSv',
+    /*disabledProperty: 'is_active',*/
     noneLabel: 'Alla avhämtningsbibliotek'
   }, {
     source: 'orderTypes',
