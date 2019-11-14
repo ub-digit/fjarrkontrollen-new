@@ -1042,7 +1042,7 @@
                   {{else if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "email")}}
                     <i class="far fa-envelope"></i>
                   {{/if}}
-                  {{moment-format note.createdAt "DD-MM-YYYY HH:mm"}} av {{get (find-by "id" note.userId users) "xkonto"}}
+                  {{moment-format note.createdAt "YYYY-MM-DD HH:mm"}} av {{get (find-by "id" note.userId users) "xkonto"}}
                 </h6>
                 {{#if (eq (get (find-by "id" note.noteTypeId noteTypes) 'label') "user")}}
                 {{#bs-button
