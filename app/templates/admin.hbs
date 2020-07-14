@@ -15,9 +15,8 @@
         {{/bs-button}}
       {{/nav.item}}
     {{/navbar.nav}}
-
+     <a class="export-link" href="{{exportUrl}}"><i class="fa fa-table"></i> Ladda ner till Excel</a>
      <span class="p-2 user-name">{{activeUserSirName}}{{affiliation}}</span>
-
     {{#bs-button type="link" onClick=(action "logout")}}Logga ut{{/bs-button}}
   {{/navbar.content}}
 {{/bs-navbar}}

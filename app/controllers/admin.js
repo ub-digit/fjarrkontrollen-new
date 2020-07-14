@@ -3,6 +3,7 @@ import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import { isArray } from '@ember/array';
 import powerSelectOverlayedOptions from '../mixins/power-select-overlayed-options';
+import ENV from '../config/environment';
 
 export default Ember.Controller.extend(powerSelectOverlayedOptions, {
   session: inject(),
@@ -58,6 +59,10 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     return currentUser.name;
   }),
 
+  exportUrl: computed(function() {
+     return ENV.APP.serviceURL + "/orders/export/?token=" + this.get('session.data.authenticated.token');
+  }),
+
   findOrderPromise(barcode) {
     return this.store.findRecord('order', barcode).catch((error) => {
       if (
@@ -77,7 +82,6 @@ export default Ember.Controller.extend(powerSelectOverlayedOptions, {
     logout() {
       this.get('session').invalidate();
     },
-
 
     scan(changeset) {
       return this.findOrderPromise(changeset.get('barcode')).then((order) => {
