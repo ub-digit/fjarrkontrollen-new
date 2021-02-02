@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   frontend:
-    image: docker.ub.gu.se/gup-frontend:${GIT_REVISION}
+    image: docker.ub.gu.se/fjarrkontrollen-frontend:${GIT_REVISION}
     build:
       context: ./frontend
       args:
